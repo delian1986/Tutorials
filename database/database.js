@@ -1,7 +1,10 @@
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
+
+const User = require('../models/User');
+
 module.exports = () => {
-    mongoose.connect('mongodb://localhost:27017/rest-api-db', {
+    mongoose.connect('mongodb://localhost:27017/tutorials-rest-api-db', {
         useNewUrlParser: true
     });       
     const db = mongoose.connection;
@@ -9,8 +12,12 @@ module.exports = () => {
         if (err) {
             console.log(err);
         } 
-
-        console.log('Database ready');
+        User.seedAdminUser().then(() => {
+            console.log('Database ready');                
+        }).catch((reason) => {
+            console.log('Something went wrong');
+            console.log(reason);
+        });
     });
 
     db.on('error', reason => {

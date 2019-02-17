@@ -3,7 +3,7 @@ const { body } = require('express-validator/check');
 const authController = require('../controllers/auth');
 const User = require('../models/User');
 
-router.post('/signup', 
+router.post('/register',
   [
     // TODO: Add normalize email and check
     body('email')
@@ -18,15 +18,21 @@ router.post('/signup',
       }),
     body('password')
       .trim()
-      .isLength({ min: 5 })
+      .isLength({ min: 3 })
       .withMessage('Please enter a valid password.'),
+    body('repeatPassword')
+      .trim()
+      .withMessage('Passwords must match!')
+      .custom((value,{req})=>{
+          return value===req.body.password
+      }),
     body('name')
       .trim()
       .not()
       .isEmpty()
       .withMessage('Please enter a valid name.')
   ]
-, authController.signUp);
-router.post('/signin', authController.signIn);
+  , authController.register);
+router.post('/login', authController.login);
 
 module.exports = router;

@@ -18,7 +18,7 @@ function validateUser(req, res) {
 }
 
 module.exports = {
-  signUp: (req, res) => {
+  register: (req, res) => {
     if (validateUser(req, res)) {
       const { email, password, name } = req.body;
       const salt = encryption.generateSalt();
@@ -27,6 +27,7 @@ module.exports = {
         email,
         hashedPassword,
         name,
+        roles:'User',
         salt
       }).then((user) => {
         res.status(201)
@@ -41,7 +42,7 @@ module.exports = {
       });
     }
   },
-  signIn: (req, res) => {
+  login: (req, res) => {
     const { email, password } = req.body;
 
     User.findOne({ email: email })
@@ -69,7 +70,9 @@ module.exports = {
            { 
              message: 'User successfully logged in!', 
              token, 
-             userId: user._id.toString() 
+             userId: user._id.toString(),
+             role:user.roles[0],
+             enrolledCourses:user.enrolledCourses
            });
       })
       .catch(error => {
