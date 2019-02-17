@@ -1,17 +1,16 @@
+/* eslint-disable no-console */
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
 
 const User = require('../models/User');
 
-module.exports = () => {
-    mongoose.connect('mongodb://localhost:27017/tutorials-rest-api-db', {
+module.exports = config => {
+    mongoose.connect(config.dbPath, {
         useNewUrlParser: true
     });       
     const db = mongoose.connection;
     db.once('open', err => {
-        if (err) {
-            console.log(err);
-        } 
+        if (err) throw err;
         User.seedAdminUser().then(() => {
             console.log('Database ready');                
         }).catch((reason) => {
@@ -19,7 +18,6 @@ module.exports = () => {
             console.log(reason);
         });
     });
-
     db.on('error', reason => {
         console.log(reason);
     });
