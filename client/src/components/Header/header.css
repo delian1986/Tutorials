@@ -1,0 +1,5 @@
+.navbar-light .nav-item.active .nav-link,
+.navbar-light .nav-item:focus .nav-link,
+.navbar-light .nav-item:hover .nav-link {
+        color: #6e2222;
+}

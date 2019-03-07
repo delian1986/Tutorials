@@ -1,0 +1,9 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+h2{
+    text-align: center;
+}
+
+.App{
+    max-width: 1300px;
+    margin: 0 auto;
+}
