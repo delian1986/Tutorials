@@ -1,7 +1,7 @@
 import React, { Component,Fragment } from 'react'
 
 import './home.css'
-import CoursesDeck from '../../components/Courses/CoursesDeck';
+import CoursesDeck from './../Courses/CoursesDeck';
 import Jumbotron from './Jumbotron';
 
 export default class Home extends Component {

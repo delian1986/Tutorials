@@ -3,15 +3,15 @@ const encryption = require('./../utilities/encryption');
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-  email: {
+  // email: {
+  //   type: String,
+  //   required: true
+  // },
+  password: {
     type: String,
     required: true
   },
-  hashedPassword: {
-    type: String,
-    required: true
-  },
-  name: {
+  username: {
     type: String,
     required: true
   },
@@ -34,7 +34,7 @@ userSchema.method({
   authenticate: function (password) {
     const currentHashedPass = encryption.generateHashedPassword(this.salt, password);
 
-    return currentHashedPass === this.hashedPassword;
+    return currentHashedPass === this.password;
   },
   isInRole: function (role) {
     return this.roles.indexOf(role) !== -1;
@@ -51,7 +51,7 @@ User.seedAdminUser = async () => {
     const salt = encryption.generateSalt();
     const hashedPassword = encryption.generateHashedPassword(salt, 'Admin');
     return User.create({
-      name: 'Admin',
+      username: 'Admin',
       email: 'admin@admin.bg',
       salt,
       hashedPassword,

@@ -1,30 +1,37 @@
 import React from 'react';
+import { NavLink as Link } from 'react-router-dom'
+
+import userService from './../../services/userService'
+
 import './header.css'
 
 
-export default class Header extends React.Component {
+const Header = (props) => {
+    const { loggedIn, isAdmin } = props
 
-    render() {
-        return (
-            <nav className="navbar navbar-expand-lg navbar-light bg-light">
-                <a className="navbar-brand" href="#">Navbar</a>
-                <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span className="navbar-toggler-icon"></span>
-                </button>
+    return (
+        <nav className="navbar navbar-expand-lg navbar-light bg-light">
+            <div className='col-md-12'>
+                <Link className="navbar-brand" to="/">Tutorials</Link>
+                <Link className='nav-link' activeClassName='active' exact to='/'>Home</Link>
 
-                <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul className="navbar-nav ml-auto">
-                        <li className="nav-item active">
-                            <a className="nav-link" href="#">Home <span className="sr-only">(current)</span></a>
-                        </li>
-                        <li className="nav-item">
-                            <a className="nav-link" href="#">Link</a>
-                        </li>
-                                               
-                    </ul>
+                {/* anonymous */}
+                {!loggedIn && <Link className='nav-link' to='/login'>Login</Link>}
+                {!loggedIn && <Link className='nav-link' to='/register'>Register</Link>}
 
-                </div>
-            </nav>
-        );
-    }
+                {/* logged in user */}
+                {loggedIn && !isAdmin && <Link className='nav-link' to='/courses'>Courses</Link>}
+
+                {/* logged in admin */}
+                {loggedIn && isAdmin && <Link className='nav-link' to='/create-course'>Create</Link>}
+
+                {/* logged in*/}
+                {loggedIn && <Link className='nav-link' to="/logout" onClick={userService.logout}>Logout</Link>}
+
+
+            </div>
+        </nav>
+    )
 }
+
+export default Header

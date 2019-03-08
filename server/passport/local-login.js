@@ -3,21 +3,21 @@ const PassportLocalStrategy = require('passport-local').Strategy
 const User = require('../models/User')
 
 module.exports = new PassportLocalStrategy({
-  usernameField: 'email',
+  usernameField: 'username',
   passwordField: 'password',
   session: false,
   passReqToCallback: true
-}, (req, email, password, done) => {
+}, (req, username, password, done) => {
   const userToLogin = {
-    email: email.trim(),
+    username: username.trim(),
     password: password.trim()
   }
 
   User
-    .findOne({email: userToLogin.email})
+    .findOne({username: userToLogin.username})
     .then(user => {
       if (!user || !user.authenticate(userToLogin.password)) {
-        const error = new Error('Incorrect email or password')
+        const error = new Error('Incorrect username or password')
         error.name = 'IncorrectCredentialsError'
         return done(error)
       }
@@ -27,7 +27,8 @@ module.exports = new PassportLocalStrategy({
       }
       const token = jwt.sign(payload, 's0m3 r4nd0m str1ng')
       const data = {
-        username: user.username
+        username: username,
+        enrolledCourses:user.enrolledCourses
       }
 
       if (user.roles) {
