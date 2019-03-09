@@ -1,36 +1,81 @@
 import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
+import { toast } from 'react-toastify';
 
-import withFormManager from './../hoc/withFormManager';
-import userModel from './../../models/UserModel'
-import userService from './../../services/userService'
+
 import Auth from '../../services/auth';
+import userService from '../../services/userService';
 
 
-class RegisterForm extends Component {
+
+export default class RegisterForm extends Component {
+
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            username: null,
+            password: null,
+            repeatPassword:null
+        }
+        this.handleChange = this.handleChange.bind(this)
+        this.handleSubmit = this.handleSubmit.bind(this)
+    }
+
+    handleChange(e) {
+        this.setState({
+            [e.target.name]: e.target.value
+        })
+
+    }
+
+    async handleSubmit(e) {
+        e.preventDefault()
+        const registerData = {
+            username: this.state.username,
+            password: this.state.password,
+            repeatPassword: this.state.repeatPassword
+        }
+
+        const res = await userService.register(registerData)
+        
+        if (res.success) {
+           toast.success(res.message)
+            this.props.history.push('/login');
+        } else {
+            if (res.errors) {
+                Object.values(res.errors).forEach((msg) => {
+                    toast.error(msg)
+                })
+            } else {
+                toast.error(res.message)
+            }
+        }
+    }
+
     render() {
-        if(Auth.isUserAuthenticated()){
-            return <Redirect to='/'/>
+        if (Auth.isUserAuthenticated()) {
+            return <Redirect to='/' />
         }
         return (
             <div className="d-flex justify-content-center align-items-center container ">
 
-                <form id="registerForm" onSubmit={this.props.handleSubmit}>
+                <form id="registerForm" onSubmit={this.handleSubmit}>
                     <h2>Register</h2>
                     <label>Username:</label>
                     <input name="username"
                         type="text"
                         className="form-control"
-                        onChange={this.props.handleChange}
-                        value={this.props.username} />
+                        onChange={this.handleChange}
+                        value={this.username} />
                     <label>Password:</label>
                     <input name="password"
                         className="form-control"
                         type="password"
-                        onChange={this.props.handleChange}
-                        value={this.props.password} />
+                        onChange={this.handleChange}
+                        value={this.password} />
                     <label>Repeat Password:</label>
-                    <input className="form-control" name="repeatPassword" type="password" onChange={this.props.handleChange} />
+                    <input className="form-control" name="repeatPassword" type="password" onChange={this.handleChange} />
                     <button type="submit" className="btn btn-primary">Register</button>
                 </form>
             </div>
@@ -38,5 +83,3 @@ class RegisterForm extends Component {
     }
 
 }
-
-export default withFormManager(RegisterForm,userModel,userService.register)

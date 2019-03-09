@@ -4,10 +4,11 @@ import { NavLink as Link } from 'react-router-dom'
 import userService from './../../services/userService'
 
 import './header.css'
+import { UserConsumer } from '../contexts/userContext';
 
 
 const Header = (props) => {
-    const { loggedIn, isAdmin } = props
+    const { loggedIn, isAdmin,username } = props
 
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -15,6 +16,7 @@ const Header = (props) => {
                 <Link className="navbar-brand" to="/">Tutorials</Link>
                 <Link className='nav-link' activeClassName='active' exact to='/'>Home</Link>
 
+                {loggedIn && <span>Hello, {username}</span>}
                 {/* anonymous */}
                 {!loggedIn && <Link className='nav-link' to='/login'>Login</Link>}
                 {!loggedIn && <Link className='nav-link' to='/register'>Register</Link>}
@@ -34,4 +36,21 @@ const Header = (props) => {
     )
 }
 
-export default Header
+const HeaderWithContext = (props) => {
+    return (
+        <UserConsumer>
+            {
+                ({ isLoggedIn,username }) => (
+                    <Header
+                        {...props}
+                        isLoggedIn={isLoggedIn}
+                        username={username}
+                    />
+                )
+            }
+            
+        </UserConsumer>
+    )
+}
+
+export default HeaderWithContext

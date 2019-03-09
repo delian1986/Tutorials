@@ -2,52 +2,73 @@ import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
 import { toast } from 'react-toastify';
 
-// import withFormManager from './../hoc/withFormManager';
 // import userModel from './../../models/UserModel'
 // import userService from './../../services/userService'
 import Auth from '../../services/auth';
-import fetcher from '../../infrastructure/fetcher';
 import userService from '../../services/userService';
+import {UserConsumer} from './../contexts/userContext'
 
 
-export default class LoginForm extends Component {
-    constructor(props){
+
+class LoginForm extends Component {
+    constructor(props) {
         super(props)
 
-        this.state={
-            username:null,
-            password:null
+        this.state = {
+            username: null,
+            password: null,
         }
-        this.handleChange=this.handleChange.bind(this)
-        this.handleSubmit=this.handleSubmit.bind(this)
+        this.handleChange = this.handleChange.bind(this)
+        this.handleSubmit = this.handleSubmit.bind(this)
     }
 
-    handleChange(e){
-        // console.log(e.target.name+' '+e.target.value)
+    handleChange(e) {
         this.setState({
-            [e.target.name]:e.target.value
+            [e.target.name]: e.target.value
         })
 
     }
 
-    async handleSubmit(e){
+    async handleSubmit(e) {
         e.preventDefault()
-        // const res=await fetcher.login(this.state)
-        // console.log(res);
-        // if(!res.success){
-        //     toast.error(res.message)
-        //     Object.keys()
-        // }else{
+        const loginData = {
+            username: this.state.username,
+            password: this.state.password
+        }
 
-        // }
-        if(userService.login(this.state)){
-            console.log(this.props);
+        const updateUser=this.props.updateUser
+
+        const res = await userService.login(loginData)
+        
+        if (res.success) {
+            updateUser({
+                isLoggedIn:true,
+                ...res.user
+            })
+
+            localStorage.setItem('token', res.token)
+            localStorage.setItem('username', res.user.username)
+            localStorage.setItem('role', res.user.roles)
+            toast.success(res.message)
+
+            this.props.history.push('/');
+        } else {
+            if (res.errors) {
+                Object.values(res.errors).forEach((msg) => {
+                    toast.error(msg)
+                })
+            } else {
+                toast.error(res.message)
+            }
         }
     }
 
+
     render() {
-        if(Auth.isUserAuthenticated()){
-            return <Redirect to='/'/>
+        // const {isLoggedIn}=this.props
+
+        if (Auth.isUserAuthenticated()) {
+            return <Redirect to='/' />
         }
 
         return (
@@ -73,5 +94,20 @@ export default class LoginForm extends Component {
 
 }
 
-// export default withFormManager(LoginForm, userModel, userService.login)
+const LoginWithContext=(props)=>{
+    return(
+        <UserConsumer>
+            {
+                ({isLoggedIn,updateUser})=>(
+                    <LoginForm
+                        {...props}
+                        isLoggedIn={isLoggedIn}
+                        updateUser={updateUser}
+                    />
+                )
+            }
+        </UserConsumer>
+    )
+}
 
+export default LoginWithContext
