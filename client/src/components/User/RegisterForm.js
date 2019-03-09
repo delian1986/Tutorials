@@ -81,5 +81,4 @@ export default class RegisterForm extends Component {
             </div>
         )
     }
-
 }

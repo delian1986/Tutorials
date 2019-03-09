@@ -6,6 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import Auth from './services/auth';
 import { UserProvider,defaultUserState } from './components/contexts/userContext'
+import AuthorizedRoute from './components/hoc/withAuthorizaedRoute'
 
 import Home from './views/home/Home';
 import Header from './components/Header/Header';
@@ -49,7 +50,7 @@ class App extends Component {
             <Route path='/' exact component={Home} />
             <Route path='/login' component={LoginForm} />
             <Route path='/register' exact component={RegisterForm} />
-            <Route path='/logout' exact component={Logout} />
+            <AuthorizedRoute path='/logout' exact component={Logout} />
             <Route component={NotFound} />
           </Switch>
         </UserProvider>
