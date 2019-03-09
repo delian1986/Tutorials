@@ -12,10 +12,19 @@ export default {
             localStorage.setItem('username', res.user.username)
             localStorage.setItem('role', res.user.roles)
             toast.success(res.message)
+            
+            return true
 
-            props.history.push('/')
         } else {
-            toast.error(res.message)
+            if (res.errors) {
+                Object.entries(res.errors).forEach(([e, msg]) => {
+                    toast.error(msg)
+                })
+            } else {
+                toast.error(res.message)
+            }
+            
+            return false
         }
 
     },
