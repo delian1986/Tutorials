@@ -4,7 +4,6 @@ import { NavLink as Link } from 'react-router-dom'
 import userService from './../../services/userService'
 
 import './header.css'
-import { UserConsumer } from '../contexts/userContext';
 
 
 const Header = (props) => {
@@ -30,27 +29,29 @@ const Header = (props) => {
                 {/* logged in*/}
                 {loggedIn && <Link className='nav-link' to="/logout" onClick={userService.logout}>Logout</Link>}
 
-
             </div>
         </nav>
     )
 }
 
-const HeaderWithContext = (props) => {
-    return (
-        <UserConsumer>
-            {
-                ({ isLoggedIn,username }) => (
-                    <Header
-                        {...props}
-                        isLoggedIn={isLoggedIn}
-                        username={username}
-                    />
-                )
-            }
-            
-        </UserConsumer>
-    )
-}
 
-export default HeaderWithContext
+export default Header;
+
+// const HeaderWithContext = (props) => {
+//     return (
+//         <UserConsumer>
+//             {
+//                 ({ isLoggedIn,username }) => (
+//                     <Header
+//                         {...props}
+//                         isLoggedIn={isLoggedIn}
+//                         username={username}
+//                     />
+//                 )
+//             }
+            
+//         </UserConsumer>
+//     )
+// }
+
+// export default HeaderWithContext

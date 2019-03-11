@@ -21,14 +21,8 @@ class Auth {
       return false
     }
 
-    static isUserRole(){
-      let role = localStorage.getItem('role')
-
-      if (role==='User') {
-        return true
-      }
-      
-      return false
+    static getRole(){
+      return localStorage.getItem('role')
     }
   }
   

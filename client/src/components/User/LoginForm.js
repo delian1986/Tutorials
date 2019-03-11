@@ -6,11 +6,8 @@ import { toast } from 'react-toastify';
 // import userService from './../../services/userService'
 import Auth from '../../services/auth';
 import userService from '../../services/userService';
-import {UserConsumer} from './../contexts/userContext'
 
-
-
-class LoginForm extends Component {
+export default class LoginForm extends Component {
     constructor(props) {
         super(props)
 
@@ -36,15 +33,15 @@ class LoginForm extends Component {
             password: this.state.password
         }
 
-        const updateUser=this.props.updateUser
+        // const updateUser=this.props.updateUser
 
         const res = await userService.login(loginData)
         
         if (res.success) {
-            updateUser({
-                isLoggedIn:true,
-                ...res.user
-            })
+            // updateUser({
+            //     isLoggedIn:true,
+            //     ...res.user
+            // })
 
             localStorage.setItem('token', res.token)
             localStorage.setItem('username', res.user.username)
@@ -94,20 +91,20 @@ class LoginForm extends Component {
 
 }
 
-const LoginWithContext=(props)=>{
-    return(
-        <UserConsumer>
-            {
-                ({isLoggedIn,updateUser})=>(
-                    <LoginForm
-                        {...props}
-                        isLoggedIn={isLoggedIn}
-                        updateUser={updateUser}
-                    />
-                )
-            }
-        </UserConsumer>
-    )
-}
+// const LoginWithContext=(props)=>{
+//     return(
+//         <UserConsumer>
+//             {
+//                 ({isLoggedIn,updateUser})=>(
+//                     <LoginForm
+//                         {...props}
+//                         isLoggedIn={isLoggedIn}
+//                         updateUser={updateUser}
+//                     />
+//                 )
+//             }
+//         </UserConsumer>
+//     )
+// }
 
-export default LoginWithContext
+// export default LoginWithContext

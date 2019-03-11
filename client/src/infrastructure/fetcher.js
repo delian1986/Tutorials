@@ -1,4 +1,7 @@
+import Auth from './../services/auth'
+
 const HOST = 'http://127.0.0.1:5000'
+
 
 const fetcher = {
   async register(data) {
@@ -18,6 +21,18 @@ const fetcher = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+
+    return res.json()
+  },
+  async courseCreate(data){
+    const res = await fetch(`${HOST}/course/create`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'bearer ' + Auth.getToken()
       },
       body: JSON.stringify(data)
     })

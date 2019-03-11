@@ -1,32 +1,33 @@
-import React,{Component} from 'react'
-import {Route,Redirect} from 'react-router-dom'
-import {UserConsumer} from './../contexts/userContext'
+import React, { Component } from 'react'
+import {Redirect} from 'react-router-dom'
+import Auth from '../../services/auth';
 
-class AuthorizedRoute extends Component{
-    render(){
-        const{isLoggedIn,...otherProps }= this.props
-        
-        if (!isLoggedIn){
-            return <Redirect to='/'/>
+export default function withAuthorization(WrappedComponent, roles) {
+    return class WithAuthorization extends Component {
+        constructor(props) {
+            super(props)
+
+            this.state = {
+                role: Auth.getRole()
+            }
         }
 
-        return <Route {...otherProps}/>
+
+        render = () => {
+            let hasAccess = roles.indexOf(this.state.role) > -1
+            if (hasAccess) {
+                return (
+                    <WrappedComponent {...this.props} />
+                )
+            }
+            return(
+                <Redirect to='/'/>
+            ) 
+
+        }
     }
 }
 
-const AuthorizedRouteWithContext = (props)=>{
-    return(
-        <UserConsumer>
-            {
-                ({isLoggedIn})=>(
-                    <AuthorizedRoute 
-                    {...props} 
-                    isLoggedIn={isLoggedIn}
-                    />
-                )
-            }
-        </UserConsumer>
-    )
+export function withAdminAuthorization(Component, allowedRoles) {
+    return withAuthorization(Component, allowedRoles)
 }
-
-export default AuthorizedRouteWithContext

@@ -4,8 +4,6 @@ import './App.css';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import Auth from './services/auth';
-import { UserProvider,defaultUserState } from './components/contexts/userContext'
 import AuthorizedRoute from './components/hoc/withAuthorizaedRoute'
 
 import Home from './views/home/Home';
@@ -15,45 +13,31 @@ import Footer from './components/Footer/Footer';
 import LoginForm from './components/User/LoginForm';
 import RegisterForm from './components/User/RegisterForm';
 import Logout from './components/User/Logout';
+import Auth from './services/auth';
+import CreateCourseForm from './components/Course/CreateForm';
 
 class App extends Component {
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      user: {
-        ...defaultUserState,
-        updateUser: this.updateUser,
-        username:localStorage.getItem('username') || ''
-      }
-    }
-  }
-
-  updateUser = (user) => {
-    this.setState({ user })
-  }
 
 
   render() {
-    const { user } = this.state
 
     return (
       <div className="App">
-        <UserProvider value={user}>
           <Header
-            loggedIn={this.state.user.isLoggedIn}
+            loggedIn={Auth.isUserAuthenticated()}
             isAdmin={Auth.isUserAdmin()}
+            username={Auth.getUsername()}
 
           />
           <ToastContainer />
           <Switch>
             <Route path='/' exact component={Home} />
             <Route path='/login' component={LoginForm} />
-            <Route path='/register' exact component={RegisterForm} />
-            <AuthorizedRoute path='/logout' exact component={Logout} />
+            <Route path='/register' component={RegisterForm} />
+            <Route path='/logout' component={AuthorizedRoute(Logout,['User,Admin'])} />
+            <Route path='/create-course' component={AuthorizedRoute(CreateCourseForm,['Admin'])} />
             <Route component={NotFound} />
           </Switch>
-        </UserProvider>
         <Footer />
 
       </div>

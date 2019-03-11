@@ -4,11 +4,16 @@ const Schema = mongoose.Schema;
 const courseSchema = new Schema({
   title: {
     type: String,
+    unique:true,
     required: true
   },
   content: {
     type: String,
     required: true
+  },
+  image:{
+    type:String,
+    required:true
   },
   creator: {
     type: Schema.Types.ObjectId,

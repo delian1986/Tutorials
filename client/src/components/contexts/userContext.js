@@ -1,8 +1,8 @@
 import {createContext} from 'react'
 
 const defaultUserState={
-    roles:[],
-    username:null,
+    role:localStorage.getItem('role') || null,
+    username:localStorage.getItem('username') || null,
     isLoggedIn:!!localStorage.getItem('token'),
     updateUser(){}
 }
