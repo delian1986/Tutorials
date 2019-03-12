@@ -25,6 +25,7 @@ const Header = (props) => {
 
                 {/* logged in admin */}
                 {loggedIn && isAdmin && <Link className='nav-link' to='/create-course'>Create</Link>}
+                {loggedIn && isAdmin && <Link className='nav-link' to='/add-lecture'>Add Lecture</Link>}
 
                 {/* logged in*/}
                 {loggedIn && <Link className='nav-link' to="/logout" onClick={userService.logout}>Logout</Link>}
@@ -36,22 +37,3 @@ const Header = (props) => {
 
 
 export default Header;
-
-// const HeaderWithContext = (props) => {
-//     return (
-//         <UserConsumer>
-//             {
-//                 ({ isLoggedIn,username }) => (
-//                     <Header
-//                         {...props}
-//                         isLoggedIn={isLoggedIn}
-//                         username={username}
-//                     />
-//                 )
-//             }
-            
-//         </UserConsumer>
-//     )
-// }
-
-// export default HeaderWithContext

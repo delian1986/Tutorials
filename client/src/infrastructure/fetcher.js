@@ -27,7 +27,7 @@ const fetcher = {
 
     return res.json()
   },
-  async courseCreate(data){
+  async courseCreate(data) {
     const res = await fetch(`${HOST}/course/create`, {
       method: 'POST',
       headers: {
@@ -38,8 +38,38 @@ const fetcher = {
     })
 
     return res.json()
-  }
+  },
+  async getAllCoursesNames() {
+    const res = await fetch(`${HOST}/course/allNames`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'bearer ' + Auth.getToken()
+      }
+    })
+
+    return res.json()
+  },
+  async getCourseById(id) {
+    const res = await fetch(`${HOST}/course/${id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+    return res.json()
+  },
+  async createLecture(data){
+    const res = await fetch(`${HOST}/lecture/create`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'bearer ' + Auth.getToken()
+      }
+    })
   
+    return res.json()
+  }
 }
 
 

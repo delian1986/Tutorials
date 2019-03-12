@@ -2,8 +2,6 @@ import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
 import { toast } from 'react-toastify';
 
-// import userModel from './../../models/UserModel'
-// import userService from './../../services/userService'
 import Auth from '../../services/auth';
 import userService from '../../services/userService';
 
@@ -33,18 +31,14 @@ export default class LoginForm extends Component {
             password: this.state.password
         }
 
-        // const updateUser=this.props.updateUser
 
         const res = await userService.login(loginData)
         
         if (res.success) {
-            // updateUser({
-            //     isLoggedIn:true,
-            //     ...res.user
-            // })
 
             localStorage.setItem('token', res.token)
             localStorage.setItem('username', res.user.username)
+            localStorage.setItem('userId', res.user.userId)
             localStorage.setItem('role', res.user.roles)
             toast.success(res.message)
 
@@ -62,7 +56,6 @@ export default class LoginForm extends Component {
 
 
     render() {
-        // const {isLoggedIn}=this.props
 
         if (Auth.isUserAuthenticated()) {
             return <Redirect to='/' />
@@ -90,21 +83,3 @@ export default class LoginForm extends Component {
     }
 
 }
-
-// const LoginWithContext=(props)=>{
-//     return(
-//         <UserConsumer>
-//             {
-//                 ({isLoggedIn,updateUser})=>(
-//                     <LoginForm
-//                         {...props}
-//                         isLoggedIn={isLoggedIn}
-//                         updateUser={updateUser}
-//                     />
-//                 )
-//             }
-//         </UserConsumer>
-//     )
-// }
-
-// export default LoginWithContext

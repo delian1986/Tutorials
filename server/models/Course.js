@@ -20,6 +20,10 @@ const courseSchema = new Schema({
     ref: 'User',
     required: true
   },
+  isListed:{
+    type:Boolean,
+    required:true
+  },
   lectures: [{
     type:Schema.Types.ObjectId,
     ref:'Lecture'

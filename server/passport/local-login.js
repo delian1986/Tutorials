@@ -14,7 +14,7 @@ module.exports = new PassportLocalStrategy({
   }
 
   User
-    .findOne({username: userToLogin.username})
+    .findOne({ username: userToLogin.username })
     .then(user => {
       if (!user || !user.authenticate(userToLogin.password)) {
         const error = new Error('Incorrect username or password')
@@ -28,7 +28,8 @@ module.exports = new PassportLocalStrategy({
       const token = jwt.sign(payload, 's0m3 r4nd0m str1ng')
       const data = {
         username: username,
-        enrolledCourses:user.enrolledCourses
+        userId: user._id,
+        enrolledCourses: user.enrolledCourses
       }
 
       if (user.roles) {

@@ -1,5 +1,6 @@
 const express = require('express')
 const authCheck = require('../config/auth-check')
+const Lecture = require('../models/Lecture')
 const Course = require('../models/Course')
 
 const router = new express.Router()
@@ -16,17 +17,12 @@ function validateCourseCreateForm(payload) {
     errors.name = 'Course name must be at least 3 symbols.'
   }
 
-  if (!payload || typeof payload.content !== 'string' || payload.content.length < 10 || payload.content.length > 200) {
+  if (!payload || !payload.videoUrl || !payload.videoUrl.startsWith('http')) {
     isFormValid = false
-    errors.content = 'Description must be at least 10 symbols and less than 120 symbols.'
+    errors.image = 'VideoUrl is required and must be a valid url.'
   }
 
-  if (!payload || !payload.image ||!payload.image.startsWith('http') ) {
-    isFormValid = false
-    errors.image = 'Image is required and must be a valid url.'
-  }
 
-  
 
   if (!isFormValid) {
     message = 'Check the form for errors.'
@@ -40,9 +36,11 @@ function validateCourseCreateForm(payload) {
 }
 
 router.post('/create', authCheck, (req, res) => {
-  const courseObj = req.body
+  const lectureObj = req.body
+  const courseId = req.body.course
+
   if (req.user.roles.indexOf('Admin') > -1) {
-    const validationResult = validateCourseCreateForm(courseObj)
+    const validationResult = validateCourseCreateForm(lectureObj)
     if (!validationResult.success) {
       return res.status(200).json({
         success: false,
@@ -52,14 +50,21 @@ router.post('/create', authCheck, (req, res) => {
     }
     // console.log(courseObj);
 
-    Course
-      .create(courseObj)
-      .then((createdCourse) => {
-        res.status(200).json({
-          success: true,
-          message: 'Course added successfully.',
-          data: createdCourse
-        })
+    Lecture
+      .create(lectureObj)
+      .then((createdLecture) => {
+        Course.findById(courseId)
+          .then(course => {
+            course.lectures.push(createdLecture._id)
+            course.save()
+              .then(
+                res.status(200).json({
+                  success: true,
+                  message: 'Lecture added successfully.',
+                  data: createdLecture
+                })
+              )
+          })
       })
       .catch((err) => {
         console.log(err)
@@ -80,23 +85,12 @@ router.post('/create', authCheck, (req, res) => {
   }
 })
 
-router.get('/allNames',(req,res)=>{
-   Course.find()
-   .then(courses => {
-    res.status(200).json(courses)
-  })
+router.get('/getAllByCourseId', (req, res) => {
+  Course.find()
+    .then(courses => {
+      res.status(200).json(courses)
+    })
 })
-
-router.get('/:id',(req,res)=>{
-  Course.findById(req.params.id)
-  .populate('lecture')
-  .then(course => {
-   res.status(200).json(course)
- }).catch((e=>{
-   console.log(e);
- }))
-})
-
-
 
 module.exports = router
+

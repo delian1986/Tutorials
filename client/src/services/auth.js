@@ -24,6 +24,10 @@ class Auth {
     static getRole(){
       return localStorage.getItem('role')
     }
+
+    static getUserId(){
+      return localStorage.getItem('userId')
+    }
   }
   
   export default Auth

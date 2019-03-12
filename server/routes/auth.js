@@ -11,9 +11,9 @@ function validateSignupForm (payload) {
   let isFormValid = true
   let message = ''
 
-  if (!payload || typeof payload.username !== 'string' || payload.username.trim().length < 4) {
+  if (!payload || typeof payload.username !== 'string' || payload.username.trim().length < 3) {
     isFormValid = false
-    errors.username = 'Username must be at least 4 characters long'
+    errors.username = 'Username must be at least 3 characters long'
   }
 
   // if (!payload || typeof payload.email !== 'string' || !validator.isEmail(payload.email)) {
@@ -21,9 +21,9 @@ function validateSignupForm (payload) {
   //   errors.email = 'Please provide a correct email address'
   // }
 
-  if (!payload || typeof payload.password !== 'string' || payload.password.trim().length < 4) {
+  if (!payload || typeof payload.password !== 'string' || payload.password.trim().length < 3) {
     isFormValid = false
-    errors.password = 'Password must be at least 4 characters long'
+    errors.password = 'Password must be at least 3 characters long'
   }
 
   if (!payload || typeof payload.repeatPassword !== 'string' || payload.repeatPassword.trim()!==payload.password.trim()) {
@@ -104,6 +104,7 @@ router.post('/login', (req, res, next) => {
   }
 
   return passport.authenticate('local-login', (err, token, userData) => {
+    // console.log(userData);
     if (err) {
       if (err.name === 'IncorrectCredentialsError') {
         return res.status(200).json({
