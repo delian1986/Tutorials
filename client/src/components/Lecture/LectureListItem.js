@@ -12,8 +12,8 @@ const LectureListItem = (props) => {
                 {title}
                 {isAdmin ? 
                 <span className="float-right">
-                    <button className="btn btn-secondary">Edit</button>
-                    <button className="btn btn-danger">Delete</button>
+                    <button className="btn btn-secondary" >Edit</button>
+                    <button className="btn btn-danger" onClick={()=>props.handleDeleteLecture(id)}>Delete</button>
                 </span>: ''}
                 </h5>
             </div>

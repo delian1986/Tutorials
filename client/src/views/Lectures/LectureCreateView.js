@@ -22,12 +22,17 @@ export default class LectureCreateView extends Component {
         }
         this.handleChange = this.handleChange.bind(this)
         this.handleLectureSubmit = this.handleLectureSubmit.bind(this)
+        this.handleDeleteLecture = this.handleDeleteLecture.bind(this)
     }
 
     async componentDidMount() {
         const allCourses = await fetcher.getAllCoursesNames()
 
         this.setState({ allCourses, loading: false })
+    }
+
+    async handleDeleteLecture(id){
+        console.log('delete ' + id)
     }
 
 
@@ -50,7 +55,6 @@ export default class LectureCreateView extends Component {
             toast.success(res.message)
 
             await this.loadLectures()
-            // this.props.history.push('/');
         } else {
             if (res.errors) {
                 Object.values(res.errors).forEach((msg) => {
@@ -122,6 +126,7 @@ export default class LectureCreateView extends Component {
                         <Lectures
                             lectures={this.state.lectures}
                             selectedCourseName={this.state.selectedCourseName}
+                            handleDeleteLecture={this.handleDeleteLecture}
                         />
                     </Fragment>
                     :

@@ -4,8 +4,8 @@ export default class LectureCreateForm extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            title: null,
-            videoUrl: null,
+            title: '',
+            videoUrl: '',
             course: this.props.selectedCourseId,
         }
         this.handleChange = this.handleChange.bind(this)

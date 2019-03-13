@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import LectureListItem from '../../components/Lecture/LectureListItem';
 
 export default class Lectures extends Component {
-
+    
     render() {
         if (this.props.lectures.length === 0) {
             return (
@@ -18,6 +18,7 @@ export default class Lectures extends Component {
                         <LectureListItem
                             key={lecture._id}
                             title={lecture.title}
+                            handleDeleteLecture={this.props.handleDeleteLecture}
                         />
                     )
                 })}
