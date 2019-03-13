@@ -4,7 +4,7 @@ import fetcher from './../infrastructure/fetcher'
 export default {
     create: async (data) => {
         const lecture = data
-        const res = await fetcher.courseCreate(lecture)
+        const res = await fetcher.createLecture(lecture)
 
        return res;
     },

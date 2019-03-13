@@ -61,11 +61,12 @@ const fetcher = {
   },
   async createLecture(data){
     const res = await fetch(`${HOST}/lecture/create`, {
-      method: 'GET',
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'bearer ' + Auth.getToken()
-      }
+      },
+      body: JSON.stringify(data)
     })
   
     return res.json()

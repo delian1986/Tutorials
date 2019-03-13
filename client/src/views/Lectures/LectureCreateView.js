@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 import courseService from '../../services/courseService';
 import Auth from '../../services/auth';
 import fetcher from '../../infrastructure/fetcher';
-import Lectures from '../../views/Lectures/Lectures';
+import Lectures from './LecturesList';
 import LectureCreateForm from '../../components/Lecture/LectureCreateForm';
 import lectureService from '../../services/lectureService';
 
@@ -14,9 +14,11 @@ export default class LectureCreateView extends Component {
         this.state = {
             allCourses: [],
             selectedCourseId: '',
+            selectedCourseName: '',
             isListed: false,
             creator: Auth.getUserId(),
-            lectures: []
+            lectures: [],
+            loading: true
         }
         this.handleChange = this.handleChange.bind(this)
         this.handleLectureSubmit = this.handleLectureSubmit.bind(this)
@@ -25,39 +27,64 @@ export default class LectureCreateView extends Component {
     async componentDidMount() {
         const allCourses = await fetcher.getAllCoursesNames()
 
-        this.setState({ allCourses })
+        this.setState({ allCourses, loading: false })
     }
 
-    
-    handleChange(e) {
-        
+
+    async handleChange(e) {
 
         this.setState({
             [e.target.name]: e.target.value,
+            selectedCourseName: e.target.options[e.target.selectedIndex].text,
             isListed: e.target.checked,
-        })
-        if(this.state.selectedCourseId!==''){
-            const lectures=this.loadLectures()
-            console.log('lectures '+ lectures);
-        }
-
+            lectures: []
+        }, this.loadLectures)
     }
 
     async handleLectureSubmit(e, data) {
         e.preventDefault()
+        data.course = this.state.selectedCourseId
         const res = await lectureService.create(data)
 
+        if (res.success) {
+            toast.success(res.message)
 
+            await this.loadLectures()
+            // this.props.history.push('/');
+        } else {
+            if (res.errors) {
+                Object.values(res.errors).forEach((msg) => {
+                    toast.error(msg)
+                })
+            } else {
+                toast.error(res.message)
+            }
+        }
 
     }
 
     async loadLectures() {
-        const res= await courseService.getCourseById(this.state.selectedCourseId)
-        return res.lectures
+
+        try {
+            const res = await courseService.getCourseById(this.state.selectedCourseId)
+            this.setState({
+                lectures: res.lectures
+            })
+        } catch (e) {
+            console.log(e)
+        }
+
     }
-   
+
 
     render() {
+        if (this.state.loading) {
+            return (
+                <div className="align-content-center">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif" alt="" />
+                </div>
+            )
+        }
 
         return (
             <Fragment>
@@ -87,10 +114,15 @@ export default class LectureCreateView extends Component {
                 {this.state.selectedCourseId ?
                     <Fragment>
                         <LectureCreateForm
-                            selectedCourseId={this.state.selectedCourseId}
+                            title={this.state.title}
+                            videoUrl={this.state.videoUrl}
+                            selectedCourseName={this.state.selectedCourseName}
                             handleLectureSubmit={this.handleLectureSubmit}
                         />
-                        <Lectures lectures={this.state.lectures} />
+                        <Lectures
+                            lectures={this.state.lectures}
+                            selectedCourseName={this.state.selectedCourseName}
+                        />
                     </Fragment>
                     :
                     <div className="card card-body bg-light text-center">

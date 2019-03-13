@@ -89,7 +89,7 @@ router.get('/allNames',(req,res)=>{
 
 router.get('/:id',(req,res)=>{
   Course.findById(req.params.id)
-  .populate('lecture')
+  .populate('lectures')
   .then(course => {
    res.status(200).json(course)
  }).catch((e=>{
