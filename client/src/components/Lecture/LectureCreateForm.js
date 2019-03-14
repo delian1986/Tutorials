@@ -4,6 +4,7 @@ export default class LectureCreateForm extends Component {
     constructor(props) {
         super(props)
         this.state = {
+            lectureId: this.props.lectureId || '',
             title: '',
             videoUrl: '',
             course: this.props.selectedCourseId,
@@ -12,13 +13,13 @@ export default class LectureCreateForm extends Component {
         this.handleChange = this.handleChange.bind(this)
     }
 
-    componentWillReceiveProps(nextProps){
-        // console.log(nextProps);
-        if(nextProps.title !== this.state.title){
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.title !== this.state.title) {
             this.setState({
-                title:nextProps.title,
-                videoUrl:nextProps.videoUrl
-                // [e.target.name]: e.target.value,
+                title: nextProps.title,
+                videoUrl: nextProps.videoUrl,
+                actionMsg: nextProps.actionMsg,
+                lectureId:nextProps.lectureId
             })
         }
     }
@@ -26,7 +27,6 @@ export default class LectureCreateForm extends Component {
     handleChange(e) {
         this.setState({
             [e.target.name]: e.target.value,
-            // title:e.target.value
         })
 
     }
@@ -36,7 +36,14 @@ export default class LectureCreateForm extends Component {
         return (
             <div className="d-flex justify-content-center align-items-center container ">
                 <div className="card card-body bg-light">
-                    <form id="lectureCreateForm" onSubmit={(e) => this.props.handleLectureSubmit(e, this.state)}>
+                    <form id="lectureCreateForm"
+                        onSubmit={
+                            this.state.actionMsg === 'Add'
+                                ?
+                                (e) => this.props.handleLectureSubmit(e, this.state)
+                                :
+                                (e) => this.props.handleSubmitEdit(e, this.state)
+                        } >
                         <h2>{this.state.actionMsg} Lecture to {this.props.selectedCourseName}</h2>
                         <div className="form-group">
                             <label htmlFor="exampleInputEmail1">Title</label>
@@ -46,7 +53,13 @@ export default class LectureCreateForm extends Component {
                             <label htmlFor="exampleInputEmail1">Video Url</label>
                             <input name="videoUrl" className="form-control" onChange={this.handleChange} type="text" value={this.state.videoUrl} />
                         </div>
-                        <button type="submit" className="btn btn-primary">Add lecture</button>
+                        {
+                            this.state.actionMsg === 'Add'
+                                ?
+                                <button type="submit" className="btn btn-primary">Add lecture</button>
+                                :
+                                <button type="submit" className="btn btn-warning">Edit lecture</button>
+                        }
                     </form>
 
                 </div>

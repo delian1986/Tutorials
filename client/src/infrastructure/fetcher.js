@@ -82,6 +82,18 @@ const fetcher = {
     })
 
     return res.json()
+  },
+  async editLecture(data){
+    const res = await fetch(`${HOST}/lecture/edit`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'bearer ' + Auth.getToken()
+      },
+      body: JSON.stringify(data)
+    })
+
+    return res.json()
   }
 
 }

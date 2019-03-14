@@ -103,14 +103,14 @@ router.post('/delete', authCheck, (req, res) => {
         course.lectures.splice(lectureIndex, 1)
         course.save()
           .then(Lecture.findByIdAndDelete(lectureId)
-          .then(()=>{
-            res.status(200).json({
-              success: true,
-              message: 'Lecture removed successfully.'
-            })
-          }))
+            .then(() => {
+              res.status(200).json({
+                success: true,
+                message: 'Lecture removed successfully.'
+              })
+            }))
 
-      }else{throw new Error('Lecture not found!')}
+      } else { throw new Error('Lecture not found!') }
     }).catch((err) => {
       console.log(err)
       let message = 'Something went wrong :( '
@@ -123,6 +123,50 @@ router.post('/delete', authCheck, (req, res) => {
       })
     })
 })
+
+router.post('/edit', authCheck, (req, res) => {
+  const lectureId = req.body.lectureId
+  const title = req.body.lectureTitleToEdit
+  const videoUrl = req.body.videoUrlToEdit
+
+  const lectureObj = { title, videoUrl }
+  if (req.user.roles.indexOf('Admin') > -1) {
+    const validationResult = validateCourseCreateForm(lectureObj)
+    if (!validationResult.success) {
+      return res.status(200).json({
+        success: false,
+        message: validationResult.message,
+        errors: validationResult.errors
+      })
+    }
+  }
+
+  Lecture.findById(lectureId)
+    .then(existingLecture => {
+      existingLecture.title = title
+      existingLecture.videoUrl = videoUrl
+
+      existingLecture.save()
+        .then(editedLecture => {
+          res.status(200).json({
+            success: true,
+            message: 'Lecture edited successfully.',
+          })
+        })
+    })
+    .catch((err) => {
+      console.log(err)
+      let message = 'Something went wrong :( Check the form for errors.'
+      if (err.code === 11000) {
+        message = 'Lecture with the given name already exists.'
+      }
+      return res.status(200).json({
+        success: false,
+        message: message
+      })
+    })
+})
+
 
 module.exports = router
 

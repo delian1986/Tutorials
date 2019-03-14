@@ -12,6 +12,11 @@ export default {
         const res=await fetcher.deleteLecture(data)
 
         return res
+    },
+    edit:async(data)=>{
+        const res=await fetcher.editLecture(data)
+
+        return res
     }
     
     // getCourseById: async(id)=>{
