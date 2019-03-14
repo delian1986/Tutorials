@@ -18,11 +18,15 @@ export default class LectureCreateView extends Component {
             isListed: false,
             creator: Auth.getUserId(),
             lectures: [],
-            loading: true
+            loading: true,
+            lectureTitleToEdit:'',
+            videoUrlToEdit:'',
+
         }
         this.handleChange = this.handleChange.bind(this)
         this.handleLectureSubmit = this.handleLectureSubmit.bind(this)
         this.handleDeleteLecture = this.handleDeleteLecture.bind(this)
+        this.handleEditLecture = this.handleEditLecture.bind(this)
     }
 
     async componentDidMount() {
@@ -31,8 +35,34 @@ export default class LectureCreateView extends Component {
         this.setState({ allCourses, loading: false })
     }
 
-    async handleDeleteLecture(id){
-        console.log('delete ' + id)
+    async handleDeleteLecture(e,lectureId,courseId){
+        const data={lectureId,courseId}
+        const res= await lectureService.delete(data)
+
+        if (res.success) {
+            toast.success(res.message)
+
+            await this.loadLectures()
+        } else {
+            if (res.errors) {
+                Object.values(res.errors).forEach((msg) => {
+                    toast.error(msg)
+                })
+            } else {
+                toast.error(res.message)
+            }
+        }
+    }
+
+    handleEditLecture(e,lectureId){
+        // console.log('edit id'+lectureId);
+        // console.log(this.state.lectures);
+        const lectureToEdit=this.state.lectures.filter(x=>x._id===lectureId)[0]
+        // console.log(lectureToEdit);
+        this.setState({
+            lectureTitleToEdit:lectureToEdit.title,
+            videoUrlToEdit:lectureToEdit.videoUrl
+        })
     }
 
 
@@ -49,11 +79,12 @@ export default class LectureCreateView extends Component {
     async handleLectureSubmit(e, data) {
         e.preventDefault()
         data.course = this.state.selectedCourseId
+
+        
         const res = await lectureService.create(data)
 
         if (res.success) {
             toast.success(res.message)
-
             await this.loadLectures()
         } else {
             if (res.errors) {
@@ -113,20 +144,20 @@ export default class LectureCreateView extends Component {
                     </div>
                 </div>
 
-
-
                 {this.state.selectedCourseId ?
                     <Fragment>
                         <LectureCreateForm
-                            title={this.state.title}
-                            videoUrl={this.state.videoUrl}
+                            title={this.state.lectureTitleToEdit}
+                            videoUrl={this.state.videoUrlToEdit}
                             selectedCourseName={this.state.selectedCourseName}
                             handleLectureSubmit={this.handleLectureSubmit}
                         />
                         <Lectures
                             lectures={this.state.lectures}
                             selectedCourseName={this.state.selectedCourseName}
+                            selectedCourseId={this.state.selectedCourseId}
                             handleDeleteLecture={this.handleDeleteLecture}
+                            handleEditLecture={this.handleEditLecture}
                         />
                     </Fragment>
                     :

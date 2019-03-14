@@ -7,7 +7,7 @@ export default class Lectures extends Component {
         if (this.props.lectures.length === 0) {
             return (
                 <div className="text-center">
-                    <h3>No Lectures in this course</h3>
+                    <h3>No Lectures in this {this.props.selectedCourseName} course</h3>
                 </div>
             )
         }
@@ -17,8 +17,11 @@ export default class Lectures extends Component {
                     return (
                         <LectureListItem
                             key={lecture._id}
+                            id={lecture._id}
                             title={lecture.title}
+                            selectedCourseId={this.props.selectedCourseId}
                             handleDeleteLecture={this.props.handleDeleteLecture}
+                            handleEditLecture={this.props.handleEditLecture}
                         />
                     )
                 })}

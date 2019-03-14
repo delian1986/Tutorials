@@ -8,6 +8,11 @@ export default {
 
        return res;
     },
+    delete:async(data)=>{
+        const res=await fetcher.deleteLecture(data)
+
+        return res
+    }
     
     // getCourseById: async(id)=>{
     //     const res = await fetcher.getCourseById(id)

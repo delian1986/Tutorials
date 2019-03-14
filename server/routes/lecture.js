@@ -92,5 +92,37 @@ router.get('/getAllByCourseId', (req, res) => {
     })
 })
 
+router.post('/delete', authCheck, (req, res) => {
+  const lectureId = req.body.lectureId
+  const courseId = req.body.courseId
+
+  Course.findById(courseId)
+    .then((course) => {
+      if (course.lectures.indexOf(lectureId) > -1) {
+        const lectureIndex = course.lectures.indexOf(lectureId)
+        course.lectures.splice(lectureIndex, 1)
+        course.save()
+          .then(Lecture.findByIdAndDelete(lectureId)
+          .then(()=>{
+            res.status(200).json({
+              success: true,
+              message: 'Lecture removed successfully.'
+            })
+          }))
+
+      }else{throw new Error('Lecture not found!')}
+    }).catch((err) => {
+      console.log(err)
+      let message = 'Something went wrong :( '
+      if (err.code === 11000) {
+        message = 'Cannot delete this lecture'
+      }
+      return res.status(200).json({
+        success: false,
+        message: message
+      })
+    })
+})
+
 module.exports = router
 

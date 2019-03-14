@@ -59,7 +59,7 @@ const fetcher = {
     })
     return res.json()
   },
-  async createLecture(data){
+  async createLecture(data) {
     const res = await fetch(`${HOST}/lecture/create`, {
       method: 'POST',
       headers: {
@@ -68,9 +68,22 @@ const fetcher = {
       },
       body: JSON.stringify(data)
     })
-  
+
+    return res.json()
+  },
+  async deleteLecture(data) {
+    const res = await fetch(`${HOST}/lecture/delete`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'bearer ' + Auth.getToken()
+      },
+      body: JSON.stringify(data)
+    })
+
     return res.json()
   }
+
 }
 
 

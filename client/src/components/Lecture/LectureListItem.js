@@ -2,9 +2,8 @@ import React from 'react';
 import Auth from '../../services/auth';
 
 const LectureListItem = (props) => {
-    const { id,title } = props
+    const { id,title,selectedCourseId } = props
     const isAdmin = Auth.getRole()==='Admin'
-
     return (
         <li>
             <div className="list-group-item">
@@ -12,8 +11,8 @@ const LectureListItem = (props) => {
                 {title}
                 {isAdmin ? 
                 <span className="float-right">
-                    <button className="btn btn-secondary" >Edit</button>
-                    <button className="btn btn-danger" onClick={()=>props.handleDeleteLecture(id)}>Delete</button>
+                    <button className="btn btn-secondary" onClick={(e)=>props.handleEditLecture(e,id)} >Edit</button>
+                    <button className="btn btn-danger" onClick={(e)=>props.handleDeleteLecture(e,id,selectedCourseId)}>Delete</button>
                 </span>: ''}
                 </h5>
             </div>
