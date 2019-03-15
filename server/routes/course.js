@@ -21,12 +21,12 @@ function validateCourseCreateForm(payload) {
     errors.content = 'Description must be at least 10 symbols and less than 120 symbols.'
   }
 
-  if (!payload || !payload.image ||!payload.image.startsWith('http') ) {
+  if (!payload || !payload.image || !payload.image.startsWith('http')) {
     isFormValid = false
     errors.image = 'Image is required and must be a valid url.'
   }
 
-  
+
 
   if (!isFormValid) {
     message = 'Check the form for errors.'
@@ -40,7 +40,14 @@ function validateCourseCreateForm(payload) {
 }
 
 router.post('/create', authCheck, (req, res) => {
-  const courseObj = req.body
+  const courseId = req.body.courseId
+  const content = req.body.content
+  const image = req.body.image
+  const isListed = req.body.isListed
+  const creator = req.body.creator
+  const title = req.body.title
+
+  const courseObj = { title, content, image, creator, isListed }
   if (req.user.roles.indexOf('Admin') > -1) {
     const validationResult = validateCourseCreateForm(courseObj)
     if (!validationResult.success) {
@@ -62,14 +69,9 @@ router.post('/create', authCheck, (req, res) => {
         })
       })
       .catch((err) => {
-        console.log(err)
-        let message = 'Something went wrong :( Check the form for errors.'
-        if (err.code === 11000) {
-          message = 'Course with the given name already exists.'
-        }
         return res.status(200).json({
           success: false,
-          message: message
+          message: err.message
         })
       })
   } else {
@@ -80,21 +82,92 @@ router.post('/create', authCheck, (req, res) => {
   }
 })
 
-router.get('/allNames',(req,res)=>{
-   Course.find()
-   .then(courses => {
-    res.status(200).json(courses)
-  })
+router.post('/edit', authCheck, (req, res) => {
+  const courseId = req.body.courseId
+  const content = req.body.content
+  const image = req.body.image
+  const isListed = req.body.isListed
+  const creator = req.body.creator
+  const title = req.body.title
+
+  const courseObj = { title, content, image }
+
+  if (req.user.roles.indexOf('Admin') > -1) {
+    const validationResult = validateCourseCreateForm(courseObj)
+    if (!validationResult.success) {
+      return res.status(200).json({
+        success: false,
+        message: validationResult.message,
+        errors: validationResult.errors
+      })
+    }
+
+    Course.findById(courseId)
+      .then((existingCourse) => {
+        existingCourse.content = content
+        existingCourse.image = image
+        existingCourse.isListed = isListed
+        existingCourse.creator = creator
+        existingCourse.title = title
+
+        existingCourse.save()
+          .then(() => {
+            res.status(200).json({
+              success: true,
+              message: 'Course edited successfully.'
+            })
+          })
+          .catch((e) => {
+            return res.status(200).json({
+              success: false,
+              message: message
+            })
+          })
+      })
+  } else {
+    return res.status(200).json({
+      success: false,
+      message: 'Invalid credentials!'
+    })
+  }
 })
 
-router.get('/:id',(req,res)=>{
+
+router.get('/allNames', (req, res) => {
+  Course.find()
+    .then(courses => {
+      res.status(200).json(courses)
+    })
+})
+
+router.get('/top', (req, res) => {
+
+  Course.find({ isListed: true })
+    .sort({ timesEnrolled: -1 })
+    .limit(3)
+    .then(found => {
+      res.status(200).json({
+        success: true,
+        data: found
+      })
+    })
+    .catch((e) => {
+      console.log(e.message);
+      return res.status(200).json({
+        success: false,
+        message: e.message
+      })
+    })
+})
+
+router.get('/details/:id', (req, res) => {
   Course.findById(req.params.id)
-  .populate('lectures')
-  .then(course => {
-   res.status(200).json(course)
- }).catch((e=>{
-   console.log(e);
- }))
+    .populate('lectures')
+    .then(course => {
+      res.status(200).json(course)
+    }).catch((e => {
+      console.log(e);
+    }))
 })
 
 

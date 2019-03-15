@@ -28,6 +28,13 @@ class Auth {
     static getUserId(){
       return localStorage.getItem('userId')
     }
+
+    static isEnrolledByUser(courseId){
+      const rawString=localStorage.getItem('enrolledCourses') ||''
+      let enrolledCourses=rawString.split(',')
+      
+      return enrolledCourses.indexOf(courseId)>-1
+    }
   }
   
   export default Auth

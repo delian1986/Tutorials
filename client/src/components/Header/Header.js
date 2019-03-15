@@ -7,15 +7,19 @@ import './header.css'
 
 
 const Header = (props) => {
-    const { loggedIn, isAdmin,username } = props
+    const { loggedIn, isAdmin, username } = props
 
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
-            <div className='col-md-12'>
+            <div className='container'>
+                <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span className="navbar-toggler-icon"></span>
+                </button>
                 <Link className="navbar-brand" to="/">Tutorials</Link>
+                <div className="collapse navbar-collapse" id="navbarSupportedContent"></div>
+                {loggedIn && <span>Hello, {username}</span>}
                 <Link className='nav-link' activeClassName='active' exact to='/'>Home</Link>
 
-                {loggedIn && <span>Hello, {username}</span>}
                 {/* anonymous */}
                 {!loggedIn && <Link className='nav-link' to='/login'>Login</Link>}
                 {!loggedIn && <Link className='nav-link' to='/register'>Register</Link>}
@@ -29,9 +33,8 @@ const Header = (props) => {
 
                 {/* logged in*/}
                 {loggedIn && <Link className='nav-link' to="/logout" onClick={userService.logout}>Logout</Link>}
-
             </div>
-        </nav>
+        </nav >
     )
 }
 

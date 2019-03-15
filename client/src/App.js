@@ -37,6 +37,7 @@ class App extends Component {
             <Route path='/register' component={RegisterForm} />
             <Route path='/logout' component={AuthorizedRoute(Logout,['User,Admin'])} />
             <Route path='/create-course' component={AuthorizedRoute(CreateCourseForm,['Admin'])} />
+            <Route path='/edit-course/:id' component={AuthorizedRoute(CreateCourseForm,['Admin'])} />
             <Route path='/add-lecture' component={AuthorizedRoute(LectureCreateView,['Admin'])} />
             <Route component={NotFound} />
           </Switch>

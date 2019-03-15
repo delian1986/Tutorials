@@ -51,7 +51,7 @@ const fetcher = {
     return res.json()
   },
   async getCourseById(id) {
-    const res = await fetch(`${HOST}/course/${id}`, {
+    const res = await fetch(`${HOST}/course/details/${id}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -94,8 +94,41 @@ const fetcher = {
     })
 
     return res.json()
-  }
+  },
+  async editCourse(data){
+    const res = await fetch(`${HOST}/course/edit`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'bearer ' + Auth.getToken()
+      },
+      body: JSON.stringify(data)
+    })
 
+    return res.json()
+  },
+
+  async deleteCourse(data){
+    const res = await fetch(`${HOST}/course/clear/${data}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'bearer ' + Auth.getToken()
+      },
+      body: JSON.stringify(data)
+    })
+
+    return res.json()
+  },
+  async getTopCourses(){
+    const res = await fetch(`${HOST}/course/top`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+    return res.json()
+  }
 }
 
 

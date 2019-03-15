@@ -1,7 +1,8 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { toast } from 'react-toastify';
 import courseService from '../../services/courseService';
 import Auth from '../../services/auth';
+import Spinner from '../Spinner/Spinner';
 
 export default class CreateCourseForm extends Component {
     constructor(props) {
@@ -11,11 +12,42 @@ export default class CreateCourseForm extends Component {
             title: '',
             content: '',
             image: '',
-            isListed: false,
-            creator: Auth.getUserId()
+            isListed: '',
+            creator: Auth.getUserId(),
+            isLoading: true,
+            actionMsg: 'Create',
+            courseId: ''
         }
         this.handleChange = this.handleChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
+    }
+
+    async componentDidMount() {
+
+
+        if (this.props.match.params.hasOwnProperty('id')) {
+            const courseId = this.props.match.params.id
+
+
+            try {
+                const res = await courseService.getCourseById(courseId)
+
+                this.setState({
+                    title: res.title,
+                    content: res.content,
+                    image: res.image,
+                    isListed: res.isListed,
+                    actionMsg: 'Edit',
+                    courseId: courseId
+                })
+
+            } catch (e) {
+                console.log(e);
+            }
+
+        }
+
+        this.setState({ isLoading: false })
     }
 
     handleChange(e) {
@@ -26,10 +58,16 @@ export default class CreateCourseForm extends Component {
 
     }
 
+    
+
     async handleSubmit(e) {
         e.preventDefault()
-        console.log(this.state);
-        const res = await courseService.create(this.state)
+        let res = null
+        if (this.state.actionMsg === 'Create') {
+            res = await courseService.create(this.state)
+        } else if (this.state.actionMsg === 'Edit') {
+            res = await courseService.edit(this.state)
+        }
 
         if (res.success) {
 
@@ -49,11 +87,15 @@ export default class CreateCourseForm extends Component {
 
     render() {
 
+        if (this.state.isLoading) {
+            return <Spinner />
+        }
+
         return (
             <div className="d-flex justify-content-center align-items-center container ">
                 <div className="card card-body bg-light">
                     <form id="loginForm" onSubmit={this.handleSubmit}>
-                        <h2>Create Course</h2>
+                        <h2>{this.state.actionMsg} Course</h2>
                         <div className="form-group">
                             <label htmlFor="title">Title</label>
                             <input name="title" className="form-control" onChange={this.handleChange} type="text" value={this.state.title} />
@@ -67,10 +109,18 @@ export default class CreateCourseForm extends Component {
                             <input name="image" className="form-control" onChange={this.handleChange} type="text" value={this.state.image} />
                         </div>
                         <div className="form-check">
-                            <input type="checkbox" className="form-check-input" id="exampleCheck1" name="isListed" onChange={this.handleChange} value={this.state.isListed} />
+                            <input type="checkbox" checked={this.state.isListed || ''} className="form-check-input" id="exampleCheck1" name="isListed" onChange={this.handleChange} />
                             <label className="form-check-label" htmlFor="exampleCheck1">Do you want to list that course now?</label>
                         </div>
-                        <button type="submit" className="btn btn-primary">Create</button>
+                        {
+                            this.state.actionMsg === 'Create'
+                                ?
+                                <button type="submit" className="btn btn-primary">Create</button>
+                                :
+                                <Fragment>
+                                    <button type="submit" className="btn btn-warning">Edit</button>
+                                </Fragment>
+                        }
                     </form>
                 </div>
             </div>

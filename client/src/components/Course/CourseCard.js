@@ -1,18 +1,32 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 import './coursesCard.css';
+import Auth from '../../services/auth';
 
-export default class CourseCard extends Component {
-    render() {
-        return (
-            <div className="card">
-                <img className="card-img-top" src="..." alt="Card image cap"/>
-                    <div className="card-body">
-                        <h5 className="card-title">Card title</h5>
-                        <p className="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                    </div>
-                </div>
-                )
-            }
-        }
-        
+const LectureListItem = (props) => {
+    const { id, title, content, image } = props
+    return (
+        <div className="card">
+            <img className="card-img-top" src={image} alt={title} />
+            <div className="card-body">
+                <h5 className="card-title">{title}</h5>
+                <p className="card-text">{content}</p>
+                {
+                    !Auth.isUserAuthenticated()
+                    ?
+                    <button className="btn btn-success" >Login To Enroll</button>
+                    :
+                    Auth.isEnrolledByUser(id)
+                        ?
+                        <button className="btn btn-success">Go To Course</button>
+                        :
+                        <button className="btn btn-primary">Enroll Now</button>
+                }
+
+            </div>
+        </div>
+    )
+}
+
+export default LectureListItem
+

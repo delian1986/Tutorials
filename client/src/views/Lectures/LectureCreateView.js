@@ -6,6 +6,7 @@ import fetcher from '../../infrastructure/fetcher';
 import Lectures from './LecturesList';
 import LectureCreateForm from '../../components/Lecture/LectureCreateForm';
 import lectureService from '../../services/lectureService';
+import Spinner from '../../components/Spinner/Spinner';
 
 export default class LectureCreateView extends Component {
     constructor(props) {
@@ -21,8 +22,8 @@ export default class LectureCreateView extends Component {
             loading: true,
             lectureTitleToEdit: '',
             videoUrlToEdit: '',
-            actionMsg: '',
-            lectureId:''
+            actionMsg: 'Add',
+            lectureId: ''
 
         }
         this.handleChange = this.handleChange.bind(this)
@@ -30,6 +31,7 @@ export default class LectureCreateView extends Component {
         this.handleDeleteLecture = this.handleDeleteLecture.bind(this)
         this.handleEditLecture = this.handleEditLecture.bind(this)
         this.handleSubmitEdit = this.handleSubmitEdit.bind(this)
+        this.cancelEditLecture = this.cancelEditLecture.bind(this)
     }
 
     async componentDidMount() {
@@ -65,22 +67,39 @@ export default class LectureCreateView extends Component {
             actionMsg: 'Edit',
             lectureTitleToEdit: lectureToEdit.title,
             videoUrlToEdit: lectureToEdit.videoUrl,
-            lectureId:lectureToEdit._id
+            lectureId: lectureToEdit._id
+        })
+    }
+
+    cancelEditLecture() {
+        this.setState({
+            actionMsg: 'Add',
+            lectureTitleToEdit: '',
+            videoUrlToEdit: '',
+            lectureId: ''
         })
     }
 
     async handleSubmitEdit(e, args) {
         e.preventDefault()
-        const data={
-            lectureId:args.lectureId,
-            lectureTitleToEdit:args.title,
-            videoUrlToEdit:args.videoUrl
+        const data = {
+            lectureId: args.lectureId,
+            lectureTitleToEdit: args.title,
+            videoUrlToEdit: args.videoUrl
         }
 
-        const res=await lectureService.edit(data)
+        const res = await lectureService.edit(data)
 
         if (res.success) {
             toast.success(res.message)
+
+            this.setState({
+                lectureId: '',
+                lectureTitleToEdit: '',
+                videoUrlToEdit: '',
+                actionMsg: 'Add',
+
+            })
             await this.loadLectures()
         } else {
             if (res.errors) {
@@ -112,6 +131,7 @@ export default class LectureCreateView extends Component {
 
         if (res.success) {
             toast.success(res.message)
+
             await this.loadLectures()
         } else {
             if (res.errors) {
@@ -125,29 +145,30 @@ export default class LectureCreateView extends Component {
     }
 
     async loadLectures() {
-
-        try {
-            const res = await courseService.getCourseById(this.state.selectedCourseId)
-            this.setState({
-                lectures: res.lectures
-            })
-        } catch (e) {
-            console.log(e)
+        if (this.state.selectedCourseId) {
+            try {
+                const res = await courseService.getCourseById(this.state.selectedCourseId)
+                this.setState({
+                    lectures: res.lectures
+                })
+            } catch (e) {
+                console.log(e)
+            }
         }
+
     }
 
 
     render() {
         if (this.state.loading) {
             return (
-                <div className="align-content-center">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif" alt="" />
-                </div>
+                <Spinner/>
             )
         }
 
         return (
             <Fragment>
+
                 <div className="d-flex justify-content-center align-items-center container ">
                     <div className="card card-body bg-light">
                         <form id="lectureCreateForm" onSubmit={this.handleSubmit}>
@@ -163,6 +184,12 @@ export default class LectureCreateView extends Component {
                                     })}
                                 </select>
                             </div>
+                            {this.state.selectedCourseId
+                                ?
+                                <button type="button" className="btn btn-warning" onClick={() => { this.props.history.push(`/edit-course/${this.state.selectedCourseId}`) }}>Edit this course</button>
+                                :
+                                ''
+                            }
 
                         </form>
 
@@ -179,6 +206,7 @@ export default class LectureCreateView extends Component {
                             handleLectureSubmit={this.handleLectureSubmit}
                             actionMsg={this.state.actionMsg}
                             handleSubmitEdit={this.handleSubmitEdit}
+                            cancelEditLecture={this.cancelEditLecture}
                         />
                         <Lectures
                             lectures={this.state.lectures}

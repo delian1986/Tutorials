@@ -6,12 +6,23 @@ export default {
         const course = data
         const res = await fetcher.courseCreate(course)
 
-       return res;
+        return res;
     },
-    
-    getCourseById: async(id)=>{
+
+    getCourseById: async (id) => {
         const res = await fetcher.getCourseById(id)
 
-       return res;
+        return res;
+    },
+    edit: async (data) => {
+        const res = await fetcher.editCourse(data)
+
+        return res;
+    },
+    getTop: async()=>{
+        const res=await fetcher.getTopCourses()
+
+        return res
     }
+    
 }

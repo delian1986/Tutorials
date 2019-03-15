@@ -35,11 +35,11 @@ export default class LoginForm extends Component {
         const res = await userService.login(loginData)
         
         if (res.success) {
-
             localStorage.setItem('token', res.token)
             localStorage.setItem('username', res.user.username)
             localStorage.setItem('userId', res.user.userId)
             localStorage.setItem('role', res.user.roles)
+            localStorage.setItem('enrolledCourses', res.user.enrolledCourses)
             toast.success(res.message)
 
             this.props.history.push('/');

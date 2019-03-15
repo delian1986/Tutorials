@@ -6,8 +6,8 @@ import './jumbotron.css'
 export default () => (
     <div className="jumbotron jumbotron-fluid">
         <div className="container">
-            <h1 className="display-4">Fluid jumbotron</h1>
-            <p className="lead">This is a modified jumbotron that occupies the entire horizontal space of its parent.</p>
+            <h1 className="display-4">Video Tutorials</h1>
+            <p className="lead">Start Self-Study Today: It'll Change Your Life</p>
         </div>
     </div>
 )

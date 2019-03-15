@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 
 export default class LectureCreateForm extends Component {
     constructor(props) {
@@ -31,6 +31,8 @@ export default class LectureCreateForm extends Component {
 
     }
 
+   
+
     render() {
 
         return (
@@ -58,7 +60,10 @@ export default class LectureCreateForm extends Component {
                                 ?
                                 <button type="submit" className="btn btn-primary">Add lecture</button>
                                 :
+                                <Fragment>
                                 <button type="submit" className="btn btn-warning">Edit lecture</button>
+                                <button type="button" className="btn btn-danger" onClick={this.props.cancelEditLecture}>Cancel Edit</button>
+                                </Fragment>
                         }
                     </form>
 

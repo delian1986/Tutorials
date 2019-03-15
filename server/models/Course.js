@@ -22,12 +22,16 @@ const courseSchema = new Schema({
   },
   isListed:{
     type:Boolean,
-    required:true
+    default:false
   },
   lectures: [{
     type:Schema.Types.ObjectId,
     ref:'Lecture'
-  }]
+  }],
+  timesEnrolled:{
+    type:Schema.Types.Number,
+    default:0
+  }
 });
 
 module.exports = mongoose.model('Course', courseSchema);
