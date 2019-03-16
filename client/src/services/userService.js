@@ -1,5 +1,5 @@
-import { toast } from 'react-toastify';
 import fetcher from './../infrastructure/fetcher'
+import Auth from './auth';
 
 
 export default {
@@ -15,10 +15,14 @@ export default {
         
         return res
     },
-    logout: (props) => {
+    logout: () => {
         localStorage.clear()
-        toast.success('Logout successful')
+     
+    },
+    getMyCourses:async()=>{
+        const userId=Auth.getUserId()
+        const res= await fetcher.getMyCourses(userId)
+        return res
 
-        props.history.push('/login')
     }
 }

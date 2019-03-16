@@ -28,6 +28,13 @@ export default {
         const res=await fetcher.enrollCourse(data)
 
         return res
-    }
+    },
+    getAll:async()=>{
+        const res=await fetcher.getAllCoursesNames()
+        const listed=res.filter((course)=>{
+            return course.isListed===true
+        })
+        return listed
+    },
     
 }

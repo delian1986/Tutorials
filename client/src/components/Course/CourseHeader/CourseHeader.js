@@ -2,6 +2,7 @@ import React, { Fragment } from 'react'
 import Auth from '../../../services/auth';
 import VideoPlayer from './../../VideoPlayer/VideoPlayer'
 import './courseHeader.css'
+import ProgressBar from '../../ProgressBar/ProgressBar';
 
 const CourseHeader = (props) => {
 
@@ -10,7 +11,8 @@ const CourseHeader = (props) => {
         content, 
         image, 
         nowPlaying, 
-        isPlaying 
+        isPlaying,
+        lectures
     } = props
     const id = props.match.params.id
 
@@ -54,6 +56,13 @@ const CourseHeader = (props) => {
                             <button className="btn btn-warning" onClick={() => props.history.push(`/edit-course/${id}`)}>Edit Course</button>
                             :
                             ''
+                    }
+                    {
+                        Auth.isEnrolledByUser(id)
+                        &&
+                        <ProgressBar
+                        lectures={lectures}
+                        />
                     }
                 </div>
             </div>

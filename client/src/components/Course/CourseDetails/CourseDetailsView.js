@@ -57,27 +57,26 @@ export default class CourseDetailsView extends Component {
 
     async handleVideoPlay(e, lectureId) {
 
-        if(Auth.isUserAuthenticated()){
+        if(Auth.isUserAuthenticated() && !Auth.isInWatchedVideos(lectureId)){
             const userId=Auth.getUserId()
-
             const res=await lectureService.addToWatched({userId,lectureId})
-
             if(res.success){
                 localStorage.setItem('watchedVideos',res.data.watchedVideos)
+            }else{
+                toast.error(res.message)
             }
         }
+
         const selectedLecture = this.state.lectures.filter((lecture) => {
             return lecture._id === lectureId
         })
-
 
         this.setState({
             nowPlaying: selectedLecture[0].videoUrl,
             nowPlayingLectureId: lectureId,
             isPlaying:true
         })
-
-        
+      
     }
 
     async loadCourseWithLectures() {

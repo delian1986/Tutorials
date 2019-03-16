@@ -152,7 +152,17 @@ const fetcher = {
     })
 
     return res.json()
-  }
+  },
+  async getMyCourses(id){
+    const res = await fetch(`${HOST}/course/myCourses/${id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+    return res.json()
+  },
+ 
 }
 
 

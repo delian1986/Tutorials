@@ -17,6 +17,7 @@ import Auth from './services/auth';
 import LectureCreateView from './components/Lecture/LectureCreateView/LectureCreateView';
 import CourseCreateForm from './components/Course/CourseCreateForm/CourseCreateForm';
 import CourseDetailsView from './components/Course/CourseDetails/CourseDetailsView';
+import CourseView from './components/Course/CourseView/CourseView';
 
 class App extends Component {
 
@@ -38,6 +39,7 @@ class App extends Component {
             <Route path='/register' component={RegisterForm} />
             <Route path='/logout' component={AuthorizedRoute(Logout,['User,Admin'])} />
             <Route path='/create-course' component={AuthorizedRoute(CourseCreateForm,['Admin'])} />
+            <Route path='/courses' component={AuthorizedRoute(CourseView,['User','Admin'])} />
             <Route path='/course/details/:id' component={CourseDetailsView} />
             <Route path='/edit-course/:id' component={AuthorizedRoute(CourseCreateForm,['Admin'])} />
             <Route path='/add-lecture' component={AuthorizedRoute(LectureCreateView,['Admin'])} />

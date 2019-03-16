@@ -42,7 +42,7 @@ export default class LecturesList extends Component {
                     </ul>
                     <div className="wrapper-enroll-msg">
                         <div className="enroll-msg">
-                            <h5><i>To get full access please enroll this course!</i></h5>
+                            <h5><i>This course have more {lectures.length-1} lectures! To get full access please enroll this course!</i></h5>
                         </div>
                     </div>
                 </Fragment>
