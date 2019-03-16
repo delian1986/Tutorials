@@ -1,8 +1,8 @@
 import React from 'react';
 import {Link} from 'react-router-dom'
 
-import './coursesCard.css';
-import Auth from '../../services/auth';
+import './courseCard.css';
+import Auth from '../../../services/auth';
 
 const LectureListItem = (props) => {
     const { id, title, content, image } = props

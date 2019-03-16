@@ -6,17 +6,17 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import AuthorizedRoute from './components/hoc/withAuthorizaedRoute'
 
-import Home from './views/home/Home';
+import Home from './components/Home/Home';
 import Header from './components/Header/Header';
-import NotFound from './views/notFound/NotFound';
+import NotFound from './components/notFound/NotFound';
 import Footer from './components/Footer/Footer';
 import LoginForm from './components/User/LoginForm';
 import RegisterForm from './components/User/RegisterForm';
 import Logout from './components/User/Logout';
 import Auth from './services/auth';
-import CreateCourseForm from './components/Course/CreateForm';
-import LectureCreateView from './views/Lectures/LectureCreateView';
-import CourseDetailsView from './views/Courses/CourseDetailsView';
+import LectureCreateView from './components/Lecture/LectureCreateView';
+import CourseCreateForm from './components/Course/CourseCreateForm/CourseCreateForm';
+import CourseDetailsView from './components/Course/CourseDetails/CourseDetailsView';
 
 class App extends Component {
 
@@ -37,9 +37,9 @@ class App extends Component {
             <Route path='/login' component={LoginForm} />
             <Route path='/register' component={RegisterForm} />
             <Route path='/logout' component={AuthorizedRoute(Logout,['User,Admin'])} />
-            <Route path='/create-course' component={AuthorizedRoute(CreateCourseForm,['Admin'])} />
+            <Route path='/create-course' component={AuthorizedRoute(CourseCreateForm,['Admin'])} />
             <Route path='/course/details/:id' component={CourseDetailsView} />
-            <Route path='/edit-course/:id' component={AuthorizedRoute(CreateCourseForm,['Admin'])} />
+            <Route path='/edit-course/:id' component={AuthorizedRoute(CourseCreateForm,['Admin'])} />
             <Route path='/add-lecture' component={AuthorizedRoute(LectureCreateView,['Admin'])} />
             <Route component={NotFound} />
           </Switch>

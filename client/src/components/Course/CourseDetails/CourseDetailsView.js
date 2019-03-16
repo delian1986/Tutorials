@@ -1,8 +1,8 @@
 import React, {Component} from 'react'
-import CourseHeader from '../../components/Course/CourseHeader';
-import courseService from '../../services/courseService';
-import Spinner from '../../components/Spinner/Spinner';
-import Lectures from '../Lectures/LecturesList';
+import CourseHeader from './../CourseHeader/CourseHeader';
+import courseService from '../../../services/courseService';
+import Spinner from '../../Spinner/Spinner';
+import Lectures from '../../Lecture/LecturesList';
 
 export default class CourseDetailsView extends Component{
     constructor(props){

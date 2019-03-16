@@ -1,5 +1,5 @@
 .jumbotron{
-    background-image: url("./../../images/present-video.png");
+    background-image: url("./../../../images/present-video.png");
     background-size: cover;
     height: 300px;
     color:white

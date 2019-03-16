@@ -1,14 +1,14 @@
 import React, { Fragment, Component } from 'react';
-import './coursesDeck.css'
+import './courseDeck.css'
 
-import CourseCard from './../../components/Course/CourseCard';
-import Spinner from './../../components/Spinner/Spinner'
-import courseService from '../../services/courseService';
+import CourseCard from './../CourseCard/CourseCard';
+import Spinner from '../../Spinner/Spinner'
+import courseService from '../../../services/courseService';
 import { toast } from 'react-toastify';
-import Auth from '../../services/auth';
+import Auth from '../../../services/auth';
 
 
-export default class CoursesDeck extends Component {
+export default class CourseDeck extends Component {
   constructor(props) {
     super(props)
 
@@ -38,7 +38,6 @@ export default class CoursesDeck extends Component {
         localStorage.setItem('enrolledCourses', res.data.enrolledCourses)
         toast.success(res.message)
         this.loadCourses()
-        // this.props.history.push('/');
     } else {
         if (res.errors) {
             Object.values(res.errors).forEach((msg) => {

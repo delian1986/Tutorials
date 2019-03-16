@@ -3,13 +3,10 @@ import Auth from '../../services/auth';
 
 const LectureListItem = (props) => {
     const { id,title,selectedCourseId } = props
-    const isAdmin = Auth.getRole()==='Admin'
+    const isAdmin = Auth.isUserAdmin()
     return (
         <li>
-            <div className="list-group-item"
-            
-            >
-
+            <div className="list-group-item">
                 <h5 className="mb-1" key={id}>
                 {title}
                 {isAdmin ? 
@@ -18,7 +15,8 @@ const LectureListItem = (props) => {
                     <button className="btn btn-danger" onClick={(e)=>props.handleDeleteLecture(e,id,selectedCourseId)}>Delete</button>
                 </span>
                 : 
-                ''}
+                <i class="fa fa-play pull-center"></i>
+                }
                 </h5>
             </div>
 

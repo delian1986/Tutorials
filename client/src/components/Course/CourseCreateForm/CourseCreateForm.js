@@ -1,10 +1,10 @@
 import React, { Component, Fragment } from 'react'
 import { toast } from 'react-toastify';
-import courseService from '../../services/courseService';
-import Auth from '../../services/auth';
-import Spinner from '../Spinner/Spinner';
+import courseService from '../../../services/courseService';
+import Auth from '../../../services/auth';
+import Spinner from '../../Spinner/Spinner';
 
-export default class CreateCourseForm extends Component {
+export default class CourseCreateForm extends Component {
     constructor(props) {
         super(props)
 

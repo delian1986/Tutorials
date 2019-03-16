@@ -4,9 +4,9 @@ import courseService from '../../services/courseService';
 import Auth from '../../services/auth';
 import fetcher from '../../infrastructure/fetcher';
 import Lectures from './LecturesList';
-import LectureCreateForm from '../../components/Lecture/LectureCreateForm';
+import LectureCreateForm from './LectureCreateForm';
 import lectureService from '../../services/lectureService';
-import Spinner from '../../components/Spinner/Spinner';
+import Spinner from './../Spinner/Spinner';
 
 export default class LectureCreateView extends Component {
     constructor(props) {
