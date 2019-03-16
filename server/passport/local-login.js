@@ -29,7 +29,8 @@ module.exports = new PassportLocalStrategy({
       const data = {
         username: username,
         userId: user._id,
-        enrolledCourses: user.enrolledCourses
+        enrolledCourses: user.enrolledCourses,
+        watchedVideos:user.watchedVideos
       }
 
       if (user.roles) {

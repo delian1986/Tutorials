@@ -2,6 +2,7 @@ const express = require('express')
 const authCheck = require('../config/auth-check')
 const Lecture = require('../models/Lecture')
 const Course = require('../models/Course')
+const User = require('../models/User')
 
 const router = new express.Router()
 
@@ -165,6 +166,37 @@ router.post('/edit', authCheck, (req, res) => {
         message: message
       })
     })
+})
+
+router.post('/addToWatched', authCheck, (req, res) => {
+  const userId = req.body.userId
+  const lectureId = req.body.lectureId
+
+  User.findById(userId)
+    .then(foundUser => {
+      if (foundUser.watchedVideos.indexOf(lectureId) === -1) {
+        foundUser.watchedVideos.push(lectureId)
+        foundUser.save()
+          .then(
+            res.status(200).json({
+              success: true,
+              data:foundUser,
+              message:'Lecture added to watched'
+
+            })
+          )
+
+      }
+    })
+    .catch((err) => {
+      console.log(err)
+      let message = 'Something went wrong :( Check the form for errors.'
+      return res.status(200).json({
+        success: false,
+        message: message
+      })
+    })
+
 })
 
 

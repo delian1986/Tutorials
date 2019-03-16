@@ -35,6 +35,13 @@ class Auth {
       
       return enrolledCourses.indexOf(courseId)>-1
     }
+
+    static isInWatchedVideos(lectureId){
+      const rawString=localStorage.getItem('watchedVideos') ||''
+      let enrolledCourses=rawString.split(',')
+      
+      return enrolledCourses.indexOf(lectureId)>-1
+    }
   }
   
   export default Auth

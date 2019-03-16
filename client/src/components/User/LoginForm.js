@@ -40,6 +40,7 @@ export default class LoginForm extends Component {
             localStorage.setItem('userId', res.user.userId)
             localStorage.setItem('role', res.user.roles)
             localStorage.setItem('enrolledCourses', res.user.enrolledCourses)
+            localStorage.setItem('watchedVideos', res.user.watchedVideos)
             toast.success(res.message)
 
             this.props.history.push('/');

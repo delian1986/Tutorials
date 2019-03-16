@@ -140,6 +140,18 @@ const fetcher = {
     })
 
     return res.json()
+  },
+  async addLectureToWatched(data){
+    const res = await fetch(`${HOST}/lecture/addToWatched`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'bearer ' + Auth.getToken()
+      },
+      body: JSON.stringify(data)
+    })
+
+    return res.json()
   }
 }
 

@@ -29,10 +29,11 @@ const LectureListItem = (props) => {
                                     nowPlayingLectureId === id &&
                                     <span className="icon"><i className="fa fa-play pull-right" ></i></span>
                                 }
+                                    <button className="btn btn-success" onClick={(e) => handleVideoPlay(e, id)}>Play!</button>
                                 {
+                                    Auth.isInWatchedVideos(id)&&
                                     <i className="fa fa-check-circle"></i>
                                 }
-                                <button className="btn btn-success" onClick={(e) => handleVideoPlay(e, id)}>Play!</button>
                             </Fragment>
                     }
                 </h5>

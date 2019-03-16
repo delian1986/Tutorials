@@ -5,6 +5,7 @@ import Spinner from '../../Spinner/Spinner';
 import Lectures from '../../Lecture/LectureList/LecturesList';
 import Auth from '../../../services/auth';
 import { toast } from 'react-toastify';
+import lectureService from './../../../services/lectureService'
 
 export default class CourseDetailsView extends Component {
     constructor(props) {
@@ -35,7 +36,7 @@ export default class CourseDetailsView extends Component {
             if (res.success) {
                 localStorage.setItem('enrolledCourses', res.data.enrolledCourses)
                 toast.success(res.message)
-                this.loadCourses()
+                this.loadCourseWithLectures()
             } else {
                 if (res.errors) {
                     Object.values(res.errors).forEach((msg) => {
@@ -54,7 +55,17 @@ export default class CourseDetailsView extends Component {
         await this.loadCourseWithLectures()
     }
 
-    handleVideoPlay(e, lectureId) {
+    async handleVideoPlay(e, lectureId) {
+
+        if(Auth.isUserAuthenticated()){
+            const userId=Auth.getUserId()
+
+            const res=await lectureService.addToWatched({userId,lectureId})
+
+            if(res.success){
+                localStorage.setItem('watchedVideos',res.data.watchedVideos)
+            }
+        }
         const selectedLecture = this.state.lectures.filter((lecture) => {
             return lecture._id === lectureId
         })
@@ -65,6 +76,8 @@ export default class CourseDetailsView extends Component {
             nowPlayingLectureId: lectureId,
             isPlaying:true
         })
+
+        
     }
 
     async loadCourseWithLectures() {

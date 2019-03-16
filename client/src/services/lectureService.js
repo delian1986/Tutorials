@@ -17,6 +17,11 @@ export default {
         const res=await fetcher.editLecture(data)
 
         return res
+    },
+    addToWatched:async(data)=>{
+        const res = await fetcher.addLectureToWatched(data)
+
+        return res
     }
     
     // getCourseById: async(id)=>{

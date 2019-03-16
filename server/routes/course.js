@@ -187,7 +187,7 @@ router.post('/enroll', authCheck, (req, res) => {
           Course.findById(courseId)
           .then((foundCourse)=>{
             foundCourse.usersEnrolled.push(userId)
-            foundCourse.timesEnrolled++
+            foundCourse.timesEnrolled+=1
             foundCourse.save()
             .then(
               res.status(200).json({
