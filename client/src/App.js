@@ -14,7 +14,7 @@ import LoginForm from './components/User/LoginForm';
 import RegisterForm from './components/User/RegisterForm';
 import Logout from './components/User/Logout';
 import Auth from './services/auth';
-import LectureCreateView from './components/Lecture/LectureCreateView';
+import LectureCreateView from './components/Lecture/LectureCreateView/LectureCreateView';
 import CourseCreateForm from './components/Course/CourseCreateForm/CourseCreateForm';
 import CourseDetailsView from './components/Course/CourseDetails/CourseDetailsView';
 

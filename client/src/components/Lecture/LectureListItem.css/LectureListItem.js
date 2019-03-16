@@ -1,5 +1,5 @@
 import React from 'react';
-import Auth from '../../services/auth';
+import Auth from '../../../services/auth';
 
 const LectureListItem = (props) => {
     const { id,title,selectedCourseId } = props
@@ -15,7 +15,7 @@ const LectureListItem = (props) => {
                     <button className="btn btn-danger" onClick={(e)=>props.handleDeleteLecture(e,id,selectedCourseId)}>Delete</button>
                 </span>
                 : 
-                <i class="fa fa-play pull-center"></i>
+                <i className="fa fa-play pull-center">Play</i>
                 }
                 </h5>
             </div>

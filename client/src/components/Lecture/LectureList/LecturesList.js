@@ -1,5 +1,5 @@
 import React, { Component,Fragment } from 'react';
-import LectureListItem from '../../components/Lecture/LectureListItem';
+import LectureListItem from '../LectureListItem.css/LectureListItem';
 
 export default class Lectures extends Component {
     render() {

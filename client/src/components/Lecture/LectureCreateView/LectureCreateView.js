@@ -1,12 +1,12 @@
 import React, { Component, Fragment } from 'react'
 import { toast } from 'react-toastify';
-import courseService from '../../services/courseService';
-import Auth from '../../services/auth';
-import fetcher from '../../infrastructure/fetcher';
-import Lectures from './LecturesList';
-import LectureCreateForm from './LectureCreateForm';
-import lectureService from '../../services/lectureService';
-import Spinner from './../Spinner/Spinner';
+import courseService from '../../../services/courseService';
+import Auth from '../../../services/auth';
+import fetcher from '../../../infrastructure/fetcher';
+import Lectures from '../LectureList/LecturesList';
+import LectureCreateForm from '../LectureCreateForm/LectureCreateForm';
+import lectureService from '../../../services/lectureService';
+import Spinner from '../../Spinner/Spinner';
 
 export default class LectureCreateView extends Component {
     constructor(props) {
