@@ -1,9 +1,17 @@
 import React, { Fragment } from 'react'
 import Auth from '../../../services/auth';
+import VideoPlayer from './../../VideoPlayer/VideoPlayer'
+import './courseHeader.css'
 
 const CourseHeader = (props) => {
 
-    const { title, content, image } = props
+    const { 
+        title, 
+        content, 
+        image, 
+        nowPlaying, 
+        isPlaying 
+    } = props
     const id = props.match.params.id
 
     return (
@@ -12,12 +20,21 @@ const CourseHeader = (props) => {
             </h1>
 
             <div className="row">
+                {
+                    isPlaying
+                        ?
+                        <VideoPlayer
+                        nowPlaying={nowPlaying}
+                        />
+                        
+                        :
+                        <div className="col-md-8">
+                            <img className="img-fluid" src={image} alt="{title}" />
+                        </div>
+                }
 
-                <div className="col-md-8">
-                    <img className="img-fluid" src={image} alt="{title}" />
-                </div>
 
-                <div className="col-md-4">
+                <div className="col-md-4 text-center">
                     <h3 className="my-3">Course Description</h3>
                     <p>{content}</p>
                     {

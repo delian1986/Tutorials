@@ -145,7 +145,7 @@ router.get('/all', (req, res) => {
 router.get('/top', (req, res) => {
 
   Course.find({ isListed: true })
-    .sort({ timesEnrolled: -1 })
+    .sort({ usersEnrolled: -1 })
     .limit(3)
     .then(found => {
       res.status(200).json({
@@ -183,13 +183,21 @@ router.post('/enroll', authCheck, (req, res) => {
       if (user.enrolledCourses.indexOf(courseId === -1)) {
         user.enrolledCourses.push(courseId)
         user.save()
-          .then(
-            res.status(200).json({
-              success: true,
-              message: 'Course enrolled successfully.',
-              data: user
-            })
-          )
+        .then(
+          Course.findById(courseId)
+          .then((foundCourse)=>{
+            foundCourse.usersEnrolled.push(userId)
+            foundCourse.timesEnrolled++
+            foundCourse.save()
+            .then(
+              res.status(200).json({
+                success: true,
+                message: 'Course enrolled successfully.',
+                data: user
+              })
+            )
+          })
+        )
       } else {
         throw new Error('You already enrolled this course!')
       }

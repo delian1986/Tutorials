@@ -1,22 +1,32 @@
-import React,{Component} from 'react'
+import React, { Component } from 'react'
 import ReactPlayer from 'react-player'
+import Spinner from '../Spinner/Spinner';
 
-export default class VideoPlayer extends Component{
-    constructor(props){
+export default class VideoPlayer extends Component {
+    constructor(props) {
         super(props)
-        this.state={
-            nowPlaying:''
+        this.state = {
+            isLoading: true
         }
     }
 
-    componentWillReceiveProps(){
+    componentDidMount() {
         this.setState({
-            nowPlaying:this.props.nowPlaying
+            isLoading: false
         })
     }
-    render(){
-        return(
-            <ReactPlayer url={this.state.nowPlaying}/>
+    
+    render() {
+        if (this.state.isLoading) {
+            return <Spinner />
+        }
+
+        return (
+            <ReactPlayer
+                url={this.props.nowPlaying}
+                playing
+                controls
+            />
         )
     }
 }

@@ -3,16 +3,17 @@ import LectureListItem from '../LectureListItem/LectureListItem';
 import './lecturesList.css'
 import Auth from '../../../services/auth';
 
-export default class Lectures extends Component {
+export default class LecturesList extends Component {
     render() {
         const {
             lectures,
             selectedCourseName,
             selectedCourseId,
             handleDeleteLecture,
-            handleEditLecture
+            handleEditLecture,
+            nowPlayingLectureId
         } = this.props
-
+        const isInEditMode=this.props.isInEditMode || false
         if (lectures.length === 0) {
             return (
                 <div className="text-center">
@@ -24,7 +25,7 @@ export default class Lectures extends Component {
         if (!Auth.isEnrolledByUser(selectedCourseId) && !Auth.isUserAdmin()) {
             return (
                 <Fragment>
-                    <div className="text-center">
+                    <div className="header text-center">
                         <h3>Lectures in {selectedCourseName} course</h3>
                     </div>
                     <ul className="list-group list-group-flush list-unstyled">
@@ -36,7 +37,7 @@ export default class Lectures extends Component {
                             handleDeleteLecture={handleDeleteLecture}
                             handleEditLecture={handleEditLecture}
                             handleVideoPlay={this.props.handleVideoPlay}
-
+                            isInEditMode={isInEditMode}
                         />
                     </ul>
                     <div className="wrapper-enroll-msg">
@@ -51,7 +52,7 @@ export default class Lectures extends Component {
 
         return (
             <Fragment>
-                <div className="text-center">
+                <div className="header text-center">
                     <h3>Lectures in {selectedCourseName} course</h3>
                 </div>
                 <ul className="list-group list-group-flush list-unstyled">
@@ -65,6 +66,8 @@ export default class Lectures extends Component {
                                 handleDeleteLecture={handleDeleteLecture}
                                 handleEditLecture={handleEditLecture}
                                 handleVideoPlay={this.props.handleVideoPlay}
+                                isInEditMode={isInEditMode}
+                                nowPlayingLectureId={nowPlayingLectureId}
 
                             />
                         )

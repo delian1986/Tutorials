@@ -23,7 +23,8 @@ export default class LectureCreateView extends Component {
             lectureTitleToEdit: '',
             videoUrlToEdit: '',
             actionMsg: 'Add',
-            lectureId: ''
+            lectureId: '',
+            isInEditMode:true
 
         }
         this.handleChange = this.handleChange.bind(this)
@@ -217,6 +218,7 @@ export default class LectureCreateView extends Component {
                             selectedCourseId={this.state.selectedCourseId}
                             handleDeleteLecture={this.handleDeleteLecture}
                             handleEditLecture={this.handleEditLecture}
+                            isInEditMode={this.state.isInEditMode}
                         />
                     </Fragment>
                     :

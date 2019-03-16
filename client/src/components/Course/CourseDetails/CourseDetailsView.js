@@ -5,7 +5,6 @@ import Spinner from '../../Spinner/Spinner';
 import Lectures from '../../Lecture/LectureList/LecturesList';
 import Auth from '../../../services/auth';
 import { toast } from 'react-toastify';
-import VideoPlayer from '../../VideoPlayer/VideoPlayer';
 
 export default class CourseDetailsView extends Component {
     constructor(props) {
@@ -19,7 +18,8 @@ export default class CourseDetailsView extends Component {
             isLoading: true,
             selectedCourseId: '',
             isPlaying: false,
-            nowPlaying: ''
+            nowPlaying: '',
+            nowPlayingLectureId:''
         }
 
         this.handleEnroll = this.handleEnroll.bind(this)
@@ -51,21 +51,23 @@ export default class CourseDetailsView extends Component {
     }
 
     async componentDidMount() {
-        await this.loadCourses()
+        await this.loadCourseWithLectures()
     }
 
     handleVideoPlay(e, lectureId) {
-        const lectureVideoUrl = this.state.lectures.filter((lecture) => {
-            return lecture._id = lectureId
+        const selectedLecture = this.state.lectures.filter((lecture) => {
+            return lecture._id === lectureId
         })
 
 
         this.setState({
-            nowPlaying: lectureVideoUrl
+            nowPlaying: selectedLecture[0].videoUrl,
+            nowPlayingLectureId: lectureId,
+            isPlaying:true
         })
     }
 
-    async loadCourses() {
+    async loadCourseWithLectures() {
         const selectedCourseId = this.props.match.params.id
         try {
             const res = await courseService.getCourseById(selectedCourseId)
@@ -95,22 +97,18 @@ export default class CourseDetailsView extends Component {
         return (
             <div className="container">
                 {
-                    this.state.isPlaying
-                        ?
-                        <VideoPlayer
-                            nowPlaying={this.state.nowPlaying}
-                        />
-                        :
                         <CourseHeader
                             {...this.state}
                             {...this.props}
                             handleEnroll={this.handleEnroll}
+                            nowPlaying={this.state.nowPlaying}
                         />
                 }
 
                 <Lectures
                     {...this.state}
                     handleVideoPlay={this.handleVideoPlay}
+                    nowPlayingLectureId={this.state.nowPlayingLectureId}
                 />
             </div>
         )

@@ -3,11 +3,7 @@ const encryption = require('./../utilities/encryption');
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-  // email: {
-  //   type: String,
-  //   required: true
-  // },
-  password: {
+   password: {
     type: String,
     required: true
   },
@@ -27,6 +23,11 @@ const userSchema = new Schema({
     [{
       type:Schema.Types.ObjectId,
       ref:'Course'
+    }],
+    watchedVideos:
+    [{
+      type:Schema.Types.ObjectId,
+      ref:'Lecture'
     }]
 });
 
@@ -52,7 +53,7 @@ User.seedAdminUser = async () => {
     const password = encryption.generateHashedPassword(salt, 'Admin');
     return User.create({
       username: 'Admin',
-      email: 'admin@admin.bg',
+      
       salt,
       password,
       roles: ['Admin']
