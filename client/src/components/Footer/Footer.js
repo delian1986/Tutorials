@@ -1,7 +1,7 @@
 import React from 'react';
 import './footer.css';
 
-export default () => (
+ const Footer = () => (
     <footer className="footer">
       <div className="container">
       <div className="navbar-text pull-left">
@@ -17,3 +17,5 @@ export default () => (
       </div>
     </footer>
 )
+
+export default Footer

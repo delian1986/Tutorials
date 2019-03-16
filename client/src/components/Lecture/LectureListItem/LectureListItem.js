@@ -1,8 +1,9 @@
 import React from 'react';
 import Auth from '../../../services/auth';
+import './lectureListItem.css'
 
 const LectureListItem = (props) => {
-    const { id,title,selectedCourseId } = props
+    const { id,title,selectedCourseId,handleVideoPlay } = props
     const isAdmin = Auth.isUserAdmin()
     return (
         <li>
@@ -15,11 +16,10 @@ const LectureListItem = (props) => {
                     <button className="btn btn-danger" onClick={(e)=>props.handleDeleteLecture(e,id,selectedCourseId)}>Delete</button>
                 </span>
                 : 
-                <i className="fa fa-play pull-center">Play</i>
+                <span className="icon"><i className="fa fa-play" onClick={(e)=>handleVideoPlay(e,id)}>Play</i></span>
                 }
                 </h5>
             </div>
-
         </li>
     )
 }

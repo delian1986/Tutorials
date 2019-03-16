@@ -21,7 +21,7 @@ const CourseHeader = (props) => {
                     <h3 className="my-3">Course Description</h3>
                     <p>{content}</p>
                     {
-                        !Auth.isUserAuthenticated
+                        !Auth.isUserAuthenticated()
                             ?
                             <button className="btn btn-success" onClick={() => props.history.push('/login')}>Login To Enroll</button>
                             :

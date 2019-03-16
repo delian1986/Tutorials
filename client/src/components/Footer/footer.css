@@ -5,6 +5,10 @@
     line-height: 60px;
     background-color: #f5f5f5;
 }
+i {
+    margin-left: 50px
+}
+
 
 #root > div > footer > div > div.navbar-text.pull-left > a:nth-child(1) > i{
     color:black

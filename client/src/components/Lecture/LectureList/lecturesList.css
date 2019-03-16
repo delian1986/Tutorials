@@ -1,0 +1,11 @@
+.enroll-msg{
+    align-content: center;
+    background-color: #ffc107;
+    color:black;
+    padding: 15px 50px 15px 50px;
+    max-width: 700px;
+    display: inline-block;
+}
+.wrapper-enroll-msg{
+    text-align: center
+}

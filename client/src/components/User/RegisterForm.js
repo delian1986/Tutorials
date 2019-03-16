@@ -16,7 +16,7 @@ export default class RegisterForm extends Component {
         this.state = {
             username: null,
             password: null,
-            repeatPassword:null
+            repeatPassword: null
         }
         this.handleChange = this.handleChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
@@ -38,9 +38,9 @@ export default class RegisterForm extends Component {
         }
 
         const res = await userService.register(registerData)
-        
+
         if (res.success) {
-           toast.success(res.message)
+            toast.success(res.message)
             this.props.history.push('/login');
         } else {
             if (res.errors) {
@@ -59,25 +59,32 @@ export default class RegisterForm extends Component {
         }
         return (
             <div className="d-flex justify-content-center align-items-center container ">
-
-                <form id="registerForm" onSubmit={this.handleSubmit}>
-                    <h2>Register</h2>
-                    <label>Username:</label>
-                    <input name="username"
-                        type="text"
-                        className="form-control"
-                        onChange={this.handleChange}
-                        value={this.username} />
-                    <label>Password:</label>
-                    <input name="password"
-                        className="form-control"
-                        type="password"
-                        onChange={this.handleChange}
-                        value={this.password} />
-                    <label>Repeat Password:</label>
-                    <input className="form-control" name="repeatPassword" type="password" onChange={this.handleChange} />
-                    <button type="submit" className="btn btn-primary">Register</button>
-                </form>
+                <div className="card card-body bg-light">
+                    <form id="registerForm" onSubmit={this.handleSubmit}>
+                        <h2>Register</h2>
+                        <div className="form-group">
+                            <label>Username:</label>
+                            <input name="username"
+                                type="text"
+                                className="form-control"
+                                onChange={this.handleChange}
+                                value={this.username} />
+                        </div>
+                        <div className="form-group">
+                            <label>Password:</label>
+                            <input name="password"
+                                className="form-control"
+                                type="password"
+                                onChange={this.handleChange}
+                                value={this.password} />
+                        </div>
+                        <div className="form-group">
+                            <label>Repeat Password:</label>
+                            <input className="form-control" name="repeatPassword" type="password" onChange={this.handleChange} />
+                        </div>
+                        <button type="submit" className="btn btn-primary">Register</button>
+                    </form>
+                </div>
             </div>
         )
     }
