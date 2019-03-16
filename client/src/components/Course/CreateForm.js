@@ -31,12 +31,11 @@ export default class CreateCourseForm extends Component {
 
             try {
                 const res = await courseService.getCourseById(courseId)
-
                 this.setState({
-                    title: res.title,
-                    content: res.content,
-                    image: res.image,
-                    isListed: res.isListed,
+                    title: res.data.title,
+                    content: res.data.content,
+                    image: res.data.image,
+                    isListed: res.data.isListed,
                     actionMsg: 'Edit',
                     courseId: courseId
                 })
@@ -119,6 +118,7 @@ export default class CreateCourseForm extends Component {
                                 :
                                 <Fragment>
                                     <button type="submit" className="btn btn-warning">Edit</button>
+                                    <button type="submit" className="btn btn-primary pull-right" onClick={()=>this.props.history.push('/create-course')}>Create</button>
                                 </Fragment>
                         }
                     </form>

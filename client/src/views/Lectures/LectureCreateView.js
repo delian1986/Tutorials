@@ -148,9 +148,12 @@ export default class LectureCreateView extends Component {
         if (this.state.selectedCourseId) {
             try {
                 const res = await courseService.getCourseById(this.state.selectedCourseId)
-                this.setState({
-                    lectures: res.lectures
-                })
+                if(res.success){
+                    this.setState({
+                        lectures: res.data.lectures
+                    })
+
+                }
             } catch (e) {
                 console.log(e)
             }

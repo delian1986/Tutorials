@@ -5,6 +5,7 @@ import CourseCard from './../../components/Course/CourseCard';
 import Spinner from './../../components/Spinner/Spinner'
 import courseService from '../../services/courseService';
 import { toast } from 'react-toastify';
+import Auth from '../../services/auth';
 
 
 export default class CoursesDeck extends Component {
@@ -14,26 +15,54 @@ export default class CoursesDeck extends Component {
     this.state = {
       courses: [],
       isLoading: true
-      
+
     }
+    this.handleEnroll = this.handleEnroll.bind(this)
+
   }
-  
+
   async componentDidMount() {
     this.setState({
     })
-    
+
     this.loadCourses()
   }
 
+  async handleEnroll(e, courseId) {
+    const userId=Auth.getUserId()
+    const data={courseId,userId}
+    try {
+      const res=await courseService.enroll(data)
+
+      if (res.success) {
+        localStorage.setItem('enrolledCourses', res.data.enrolledCourses)
+        toast.success(res.message)
+        this.loadCourses()
+        // this.props.history.push('/');
+    } else {
+        if (res.errors) {
+            Object.values(res.errors).forEach((msg) => {
+                toast.error(msg)
+            })
+        } else {
+            toast.error(res.message)
+        }
+    }
+    } catch (e) {
+      toast.error(e.message)
+    }
+  }
+
+
   async loadCourses() {
-    try{
+    try {
       const res = await courseService.getTop()
 
       this.setState({
         courses: res.data,
         isLoading: false
       })
-    }catch(e){
+    } catch (e) {
       toast.error('Sever is down. Please come back later :(')
     }
 
@@ -56,6 +85,8 @@ export default class CoursesDeck extends Component {
                 image={course.image}
                 title={course.title}
                 content={course.content}
+                handleEnroll={this.handleEnroll}
+                {...this.props}
               />
             }))}
           </div>

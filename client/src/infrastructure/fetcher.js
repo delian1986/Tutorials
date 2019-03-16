@@ -40,7 +40,7 @@ const fetcher = {
     return res.json()
   },
   async getAllCoursesNames() {
-    const res = await fetch(`${HOST}/course/allNames`, {
+    const res = await fetch(`${HOST}/course/all`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -127,6 +127,18 @@ const fetcher = {
         'Content-Type': 'application/json',
       }
     })
+    return res.json()
+  },
+  async enrollCourse(data){
+    const res = await fetch(`${HOST}/course/enroll`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'bearer ' + Auth.getToken()
+      },
+      body: JSON.stringify(data)
+    })
+
     return res.json()
   }
 }

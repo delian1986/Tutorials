@@ -23,6 +23,11 @@ export default {
         const res=await fetcher.getTopCourses()
 
         return res
+    },
+    enroll:async(data)=>{
+        const res=await fetcher.enrollCourse(data)
+
+        return res
     }
     
 }

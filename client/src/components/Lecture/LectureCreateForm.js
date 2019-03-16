@@ -19,7 +19,7 @@ export default class LectureCreateForm extends Component {
                 title: nextProps.title,
                 videoUrl: nextProps.videoUrl,
                 actionMsg: nextProps.actionMsg,
-                lectureId:nextProps.lectureId
+                lectureId: nextProps.lectureId
             })
         }
     }
@@ -31,7 +31,7 @@ export default class LectureCreateForm extends Component {
 
     }
 
-   
+
 
     render() {
 
@@ -51,18 +51,19 @@ export default class LectureCreateForm extends Component {
                             <label htmlFor="exampleInputEmail1">Title</label>
                             <input name="title" className="form-control" onChange={this.handleChange} type="text" value={this.state.title} />
                         </div>
-                        <div className="form-group">
+                         <div className="form-group">
                             <label htmlFor="exampleInputEmail1">Video Url</label>
                             <input name="videoUrl" className="form-control" onChange={this.handleChange} type="text" value={this.state.videoUrl} />
-                        </div>
+                        </div> 
+                            
                         {
                             this.state.actionMsg === 'Add'
                                 ?
                                 <button type="submit" className="btn btn-primary">Add lecture</button>
                                 :
                                 <Fragment>
-                                <button type="submit" className="btn btn-warning">Edit lecture</button>
-                                <button type="button" className="btn btn-danger" onClick={this.props.cancelEditLecture}>Cancel Edit</button>
+                                    <button type="submit" className="btn btn-warning">Edit lecture</button>
+                                    <button type="button" className="btn btn-danger pull-right" onClick={this.props.cancelEditLecture}>Cancel Edit</button>
                                 </Fragment>
                         }
                     </form>

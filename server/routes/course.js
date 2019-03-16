@@ -1,6 +1,7 @@
 const express = require('express')
 const authCheck = require('../config/auth-check')
 const Course = require('../models/Course')
+const User = require('../models/User')
 
 const router = new express.Router()
 
@@ -40,6 +41,7 @@ function validateCourseCreateForm(payload) {
 }
 
 router.post('/create', authCheck, (req, res) => {
+  // console.log(req);
   const courseId = req.body.courseId
   const content = req.body.content
   const image = req.body.image
@@ -133,7 +135,7 @@ router.post('/edit', authCheck, (req, res) => {
 })
 
 
-router.get('/allNames', (req, res) => {
+router.get('/all', (req, res) => {
   Course.find()
     .then(courses => {
       res.status(200).json(courses)
@@ -164,10 +166,41 @@ router.get('/details/:id', (req, res) => {
   Course.findById(req.params.id)
     .populate('lectures')
     .then(course => {
-      res.status(200).json(course)
+      res.status(200).json({
+        success: true,
+        data: course
+      })
     }).catch((e => {
       console.log(e);
     }))
+})
+
+router.post('/enroll', authCheck, (req, res) => {
+  const { courseId, userId } = req.body
+
+  User.findById(userId)
+    .then(user => {
+      if (user.enrolledCourses.indexOf(courseId === -1)) {
+        user.enrolledCourses.push(courseId)
+        user.save()
+          .then(
+            res.status(200).json({
+              success: true,
+              message: 'Course enrolled successfully.',
+              data: user
+            })
+          )
+      } else {
+        throw new Error('You already enrolled this course!')
+      }
+    })
+    .catch((e) => {
+      console.log(e.message);
+      return res.status(200).json({
+        success: false,
+        message: e.message
+      })
+    })
 })
 
 

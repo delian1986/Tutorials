@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component,Fragment } from 'react';
 import LectureListItem from '../../components/Lecture/LectureListItem';
 
 export default class Lectures extends Component {
@@ -12,6 +12,10 @@ export default class Lectures extends Component {
             )
         }
         return (
+            <Fragment>
+            <div className="text-center">
+                    <h3>Lectures in {this.props.selectedCourseName} course</h3>
+                </div>
             <ul className="list-group list-group-flush list-unstyled">
                 {this.props.lectures.map(lecture => {
                     return (
@@ -25,8 +29,8 @@ export default class Lectures extends Component {
                         />
                     )
                 })}
-
             </ul>
+            </Fragment>
         )
     }
 }
