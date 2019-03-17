@@ -1,10 +1,10 @@
 import React, { Component,Fragment } from 'react'
 import Auth from '../../../services/auth';
-import toast from 'react-toastify'
 import courseService from '../../../services/courseService';
 import MyCourseDeck from '../MyCourses/MyCoursesDeck';
 import userService from '../../../services/userService';
-import CourseDeck from '../CourseDeck/CourseDeck';
+import AllCourseDeck from '../AllCoursesDeck/AllCourseDeck';
+import { toast } from 'react-toastify';
 
 export default class CourseView extends Component {
     constructor(props) {
@@ -16,6 +16,23 @@ export default class CourseView extends Component {
         }
 
     this.handleEnroll = this.handleEnroll.bind(this)
+    this.handleChange=this.handleChange.bind(this)
+    }
+
+    async handleChange(e) {
+        // e.target.value
+        const keyword=e.target.value
+        const filteredByKeyword=this.state.allCourses.filter((course=>{
+            return course.title.toLowerCase().includes(keyword.toLowerCase())
+        }))
+        this.setState({
+            allCourses:filteredByKeyword
+        })
+
+        if(!keyword){
+            await this.loadAllCourses()
+        }
+
 
     }
 
@@ -37,11 +54,11 @@ export default class CourseView extends Component {
         const data={courseId,userId}
         try {
           const res=await courseService.enroll(data)
-    
           if (res.success) {
             localStorage.setItem('enrolledCourses', res.data.enrolledCourses)
+            await this.loadMyCourses()
+            await this.loadAllCourses()
             toast.success(res.message)
-            this.loadCourses()
         } else {
             if (res.errors) {
                 Object.values(res.errors).forEach((msg) => {
@@ -72,7 +89,12 @@ export default class CourseView extends Component {
             <MyCourseDeck
                 myCourses={this.state.enrolledCourses}
             />
-            <CourseDeck/>
+            <AllCourseDeck
+                courses={this.state.allCourses}
+                handleEnroll={this.handleEnroll}
+                handleChange={this.handleChange}
+                {...this.props}
+            />
 
             </Fragment>
         )

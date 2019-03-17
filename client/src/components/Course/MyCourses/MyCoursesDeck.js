@@ -1,4 +1,4 @@
-import React, { Fragment, Component } from 'react';
+import React, { Fragment } from 'react';
 import './myCourseDeck.css'
 import MyCourseCard from '../MyCourseCard/MyCourseCard';
 
@@ -6,6 +6,12 @@ import MyCourseCard from '../MyCourseCard/MyCourseCard';
 
 const MyCourseDeck = (props) => {
     const myCourses = props.myCourses
+
+    if(myCourses.length===0){
+        return(
+            ''
+        )
+    }
 
     return (
         <Fragment>

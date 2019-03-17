@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 
 import './home.css'
-import TopCourseDeck from '../Course/CourseDeck/CourseDeck';
+import CourseDeck from '../Course/CourseDeck/CourseDeck';
 import Jumbotron from './Jumbotron/Jumbotron'
 
 export default class Home extends Component {
@@ -9,7 +9,7 @@ export default class Home extends Component {
         return (
             <Fragment>
                 <Jumbotron />
-                <TopCourseDeck
+                <CourseDeck
                     {...this.props} />
             </Fragment>
 

@@ -211,6 +211,19 @@ router.post('/enroll', authCheck, (req, res) => {
     })
 })
 
+router.get('/myCourses/:id', (req, res) => {
+  const userId=req.params.id;
+
+  User.findById(userId)
+      .populate('enrolledCourses')
+    .then(courses => {
+      res.status(200).json(courses)
+    })
+})
+
+
+
+
 
 
 module.exports = router

@@ -25,7 +25,7 @@ const Header = (props) => {
                 {!loggedIn && <Link className='nav-link' to='/register'>Register</Link>}
 
                 {/* logged in user */}
-                {loggedIn && !isAdmin && <Link className='nav-link' to='/courses'>Courses</Link>}
+                {loggedIn && <Link className='nav-link' to='/courses'>Courses</Link>}
 
                 {/* logged in admin */}
                 {loggedIn && isAdmin && <Link className='nav-link' to='/create-course'>Create</Link>}

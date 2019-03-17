@@ -28,6 +28,10 @@ const courseSchema = new Schema({
     type:Schema.Types.ObjectId,
     ref:'Lecture'
   }],
+  timesEnrolled:{
+    type:Number,
+    default:0
+  },
   usersEnrolled:[{
     type: Schema.Types.ObjectId,
     ref: 'User',
