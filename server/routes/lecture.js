@@ -15,7 +15,7 @@ function validateCourseCreateForm(payload) {
 
   if (!payload || typeof payload.title !== 'string' || payload.title.length < 3) {
     isFormValid = false
-    errors.name = 'Course name must be at least 3 symbols.'
+    errors.name = 'Lecture name must be at least 3 symbols.'
   }
 
   if (!payload || !payload.videoUrl || !payload.videoUrl.startsWith('http')) {

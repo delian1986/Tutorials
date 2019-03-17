@@ -7,6 +7,7 @@ import Lectures from '../LectureList/LecturesList';
 import LectureCreateForm from '../LectureCreateForm/LectureCreateForm';
 import lectureService from '../../../services/lectureService';
 import Spinner from '../../Spinner/Spinner';
+import lectureValidator from '../../../validators/lectureValidator';
 
 export default class LectureCreateView extends Component {
     constructor(props) {
@@ -89,6 +90,11 @@ export default class LectureCreateView extends Component {
             videoUrlToEdit: args.videoUrl
         }
 
+        if(lectureValidator.validate(data)){
+            toast.error(lectureValidator.validate(data))
+            return
+        }
+
         const res = await lectureService.edit(data)
 
         if (res.success) {
@@ -127,6 +133,11 @@ export default class LectureCreateView extends Component {
     async handleLectureSubmit(e, data) {
         e.preventDefault()
         data.course = this.state.selectedCourseId
+
+        if(lectureValidator.validate(data)){
+            toast.error(lectureValidator.validate(data))
+            return
+        }
 
         const res = await lectureService.create(data)
 

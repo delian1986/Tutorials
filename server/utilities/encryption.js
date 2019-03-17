@@ -8,3 +8,4 @@ module.exports = {
     return crypto.createHmac('sha256', salt).update(password).digest('hex')
   }
 }
+

@@ -3,6 +3,7 @@ import { toast } from 'react-toastify';
 import courseService from '../../../services/courseService';
 import Auth from '../../../services/auth';
 import Spinner from '../../Spinner/Spinner';
+import courseValidator from '../../../validators/courseValidator';
 
 export default class CourseCreateForm extends Component {
     constructor(props) {
@@ -63,8 +64,19 @@ export default class CourseCreateForm extends Component {
         e.preventDefault()
         let res = null
         if (this.state.actionMsg === 'Create') {
+            if(courseValidator.validate(this.state)){
+                toast.error(courseValidator.validate(this.state))
+                return
+            }
             res = await courseService.create(this.state)
+            
         } else if (this.state.actionMsg === 'Edit') {
+
+            if(courseValidator.validate(this.state)){
+                toast.error(courseValidator.validate(this.state))
+                return
+            }
+
             res = await courseService.edit(this.state)
         }
 

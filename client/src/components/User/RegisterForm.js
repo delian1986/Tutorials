@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 
 import Auth from '../../services/auth';
 import userService from '../../services/userService';
+import UserValidator from '../../validators/UserValidator';
 
 
 
@@ -35,6 +36,11 @@ export default class RegisterForm extends Component {
             username: this.state.username,
             password: this.state.password,
             repeatPassword: this.state.repeatPassword
+        }
+
+        if(UserValidator.validate(registerData)){
+            toast.error(UserValidator.validate(registerData))
+            return
         }
 
         const res = await userService.register(registerData)

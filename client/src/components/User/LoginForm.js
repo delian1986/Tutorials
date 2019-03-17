@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 
 import Auth from '../../services/auth';
 import userService from '../../services/userService';
+import UserValidator from '../../validators/UserValidator';
 
 export default class LoginForm extends Component {
     constructor(props) {
@@ -31,6 +32,10 @@ export default class LoginForm extends Component {
             password: this.state.password
         }
 
+        if(UserValidator.validate(loginData)){
+            toast.error(UserValidator.validate(loginData))
+            return
+        }
 
         const res = await userService.login(loginData)
         
