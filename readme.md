@@ -15,8 +15,9 @@
  - "Already watched" indicator
  - Course progress bar calculated upon watched lectures
  - Search
+ - Admin cannot enroll to his own courses
 
-## Instalation
+## Installation
 
 #### Prerequisites
   
