@@ -6,6 +6,8 @@ import ProgressBar from '../../ProgressBar/ProgressBar';
 
 const MyCourseCard = (props) => {
     const { id, title, content, image, lectures } = props
+
+    
     return (
         <div className="col-sm-6 col-lg-4">
             <div className="card h-100">

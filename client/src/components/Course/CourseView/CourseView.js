@@ -82,8 +82,6 @@ export default class CourseView extends Component {
         })
     }
 
-
-
     render() {
         return (
             <Fragment>
